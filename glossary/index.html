@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Словарь · Rails Stack Advisor</title>
+  <meta name="description" content="Термины из мира Rails-архитектуры — от SSR и гидратации до идемпотентности и Solid Trifecta.">
+  <link rel="stylesheet" href="/rails-stack-advisor/assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Словарь | Rails Stack Advisor</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Словарь" />
+<meta name="author" content="Ruslan" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Термины из мира Rails-архитектуры — от SSR и гидратации до идемпотентности и Solid Trifecta." />
+<meta name="twitter:description" property="og:description" content="Термины из мира Rails-архитектуры — от SSR и гидратации до идемпотентности и Solid Trifecta." />
+<link rel="canonical" href="/rails-stack-advisor/glossary/" />
+<meta property="og:url" content="/rails-stack-advisor/glossary/" />
+<meta property="og:site_name" content="Rails Stack Advisor" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Словарь" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ruslan"},"description":"Термины из мира Rails-архитектуры — от SSR и гидратации до идемпотентности и Solid Trifecta.","headline":"Словарь","url":"/rails-stack-advisor/glossary/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rsa-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/rails-stack-advisor/">
+        <span class="brand__mark">◆</span>
+        <span class="brand__text">Rails Stack Advisor</span>
+      </a>
+      <nav class="nav">
+        
+        <a href="/rails-stack-advisor/" class="">Подборщик</a>
+        <a href="/rails-stack-advisor/compare/" class="">Сравнения</a>
+        <a href="/rails-stack-advisor/projects/" class="">Кейсы</a>
+        <a href="/rails-stack-advisor/checklist/" class="">Чек-лист</a>
+        <a href="/rails-stack-advisor/glossary/" class="is-active">Словарь</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+        <span data-theme-icon aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+  <div class="wrap">
+    <h1>Словарь</h1>
+    <p class="hero__lead">Термины, которые встречаются в рекомендациях подборщика — коротко и по делу.</p>
+  </div>
+</section>
+
+<section class="block"><div class="wrap"><div class="prose">
+
+      <h2 id="section">Рендеринг</h2>
+
+      <p><strong>SSR (Server-Side Rendering)</strong> — HTML полностью формируется на сервере при каждом запросе и приходит в браузер готовым. Быстрый первый экран, полноценная индексация поисковиками. В Rails это дефолт: ERB или Phlex плюс Hotwire.</p>
+
+      <p><strong>CSR (Client-Side Rendering)</strong> — сервер отдаёт почти пустой HTML, страницу собирает JavaScript в браузере. Медленнее первая загрузка, сложнее SEO, зато богатое клиентское состояние.</p>
+
+      <p><strong>SSG (Static Site Generation)</strong> — страницы генерируются один раз на сборке. Ноль серверных расходов, идеальная скорость, но никаких пользовательских данных в рантайме. Этот сайт собран именно так — Jekyll на GitHub Pages.</p>
+
+      <p><strong>Гидратация (Hydration)</strong> — процесс, при котором JavaScript «оживляет» пришедший с сервера HTML, навешивая обработчики и восстанавливая состояние компонентов.</p>
+
+      <h2 id="hotwire">Hotwire</h2>
+
+      <p><strong>Turbo Drive</strong> — перехватывает переходы по ссылкам и отправку форм, подменяя <code class="language-plaintext highlighter-rouge">&lt;body&gt;</code> без полной перезагрузки. Ощущение SPA без единой строки вашего JS.</p>
+
+      <p><strong>Turbo Frames</strong> — независимо обновляемый кусок страницы. Ссылка внутри фрейма меняет только его содержимое.</p>
+
+      <p><strong>Turbo Streams</strong> — фрагменты HTML с инструкцией, что с ними сделать: <code class="language-plaintext highlighter-rouge">append</code>, <code class="language-plaintext highlighter-rouge">replace</code>, <code class="language-plaintext highlighter-rouge">remove</code>. Приходят в ответе на форму или через WebSocket.</p>
+
+      <p><strong>Stimulus</strong> — минимальный JS-фреймворк: контроллеры привязываются к разметке через <code class="language-plaintext highlighter-rouge">data-controller</code>. Не управляет состоянием, а дополняет пришедший HTML поведением.</p>
+
+      <p><strong>Hotwire Native</strong> — оболочка для iOS и Android, показывающая ваши же серверные вьюхи в нативном контейнере. Позволяет получить мобильное приложение без отдельной кодовой базы.</p>
+
+      <h2 id="rails-8">Rails 8</h2>
+
+      <p><strong>Solid Queue</strong> — фоновые задачи в вашей БД вместо Redis. Дефолтный адаптер Active Job начиная с Rails 8. С 8.1 выполненные задачи архивируются, а не удаляются.</p>
+
+      <p><strong>Solid Cache</strong> — кэш на диске через БД. Дешевле Redis по объёму: десятки гигабайт кэша перестают быть проблемой бюджета.</p>
+
+      <p><strong>Solid Cable</strong> — Action Cable поверх БД вместо Redis pub/sub.</p>
+
+      <p><strong>Solid Trifecta</strong> — все три вместе. Их появление означает, что новое Rails-приложение не требует Redis вообще.</p>
+
+      <p><strong>Propshaft</strong> — пайплайн ассетов, пришедший на смену Sprockets. Не компилирует и не склеивает — просто добавляет хеш к имени файла.</p>
+
+      <p><strong>Importmap</strong> — способ подключать JS-модули по URL без сборки. Ни node_modules, ни бандлера.</p>
+
+      <p><strong>Kamal</strong> — деплой Docker-контейнеров на обычные серверы по SSH. Zero-downtime, автоматический TLS через kamal-proxy, откат одной командой.</p>
+
+      <p><strong>Thruster</strong> — HTTP/2-прокси перед Puma: сжатие, кэширование статики, X-Sendfile. Ставится вместе с Rails 8.</p>
+
+      <h2 id="section-1">Архитектура</h2>
+
+      <p><strong>Монолит</strong> — одно приложение, один деплой, одна база. Для подавляющего большинства проектов — правильный выбор.</p>
+
+      <p><strong>Модульный монолит</strong> — один деплой, но с жёсткими границами между модулями, которые проверяются инструментом (Packwerk), а не только на code review.</p>
+
+      <p><strong>Микросервисы</strong> — отдельные приложения со своими БД. Оправданы размером организации, а не размером кодовой базы.</p>
+
+      <p><strong>SOA</strong> — сервис-ориентированная архитектура: крупные сервисы вокруг бизнес-возможностей, обычно с общей шиной. Предшественник и более крупнозернистый родственник микросервисов.</p>
+
+      <p><strong>Inertia.js</strong> — прослойка, позволяющая писать вьюхи на React или Vue, оставляя роутинг и контроллеры в Rails. API писать не нужно: контроллер отдаёт props напрямую.</p>
+
+      <h2 id="section-2">Паттерны</h2>
+
+      <p><strong>Service Object</strong> — класс на один бизнес-сценарий с методом <code class="language-plaintext highlighter-rouge">call</code>. Разгружает контроллеры и модели.</p>
+
+      <p><strong>Query Object</strong> — класс, инкапсулирующий сложную выборку. Убирает из моделей многоэтажные <code class="language-plaintext highlighter-rouge">scope</code>.</p>
+
+      <p><strong>Form Object</strong> — объект для формы, не совпадающей с моделью один в один: несколько моделей сразу или валидации, нужные только на одном экране.</p>
+
+      <p><strong>Policy Object</strong> — класс, отвечающий на вопрос «можно ли этому пользователю сделать это». Основа Pundit и Action Policy.</p>
+
+      <p><strong>Decorator</strong> — обёртка над моделью, добавляющая логику представления, чтобы не засорять модель методами форматирования.</p>
+
+      <p><strong>Идемпотентность</strong> — свойство операции давать один и тот же результат при повторном выполнении. Критично для платежей: ретрай после таймаута не должен создавать второе списание. Технически — уникальный ключ операции с уникальным индексом в БД.</p>
+
+      <p><strong>Машина состояний (AASM)</strong> — явное описание статусов и допустимых переходов между ними. Невалидный переход становится невозможным, а не «не должен случаться».</p>
+
+      <p><strong>N+1</strong> — классическая проблема: один запрос за списком плюс по одному запросу на каждую связанную запись. Лечится <code class="language-plaintext highlighter-rouge">includes</code>, ловится гемом Bullet.</p>
+
+      <h2 id="section-3">Прочее</h2>
+
+      <p><strong>Keyset (cursor) пагинация</strong> — вместо <code class="language-plaintext highlighter-rouge">OFFSET</code> используется условие по последнему увиденному ключу. Время ответа не растёт с номером страницы и записи не «прыгают» при вставках.</p>
+
+      <p><strong>pgvector</strong> — расширение PostgreSQL для хранения векторов и поиска по косинусной близости. База семантического поиска и RAG без отдельного векторного сервиса.</p>
+
+      <p><strong>RAG (Retrieval-Augmented Generation)</strong> — подход, при котором перед обращением к языковой модели из базы достаются релевантные фрагменты и подкладываются в запрос.</p>
+
+      <p><strong>PWA</strong> — веб-приложение, устанавливаемое на домашний экран, с манифестом, service worker и push-уведомлениями. Rails 8 генерирует заготовки в <code class="language-plaintext highlighter-rouge">app/views/pwa/</code>.</p>
+
+    </div></div></section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>
+        <strong>Rails Stack Advisor</strong> — база знаний собрана из семи production-проектов на Rails,
+        рабочих заметок и официальных гайдов.
+      </div>
+      <div class="footer__meta">
+        Ориентир: Rails 8.1 · Ruby 3.4.4 ·
+        обновлено 2026-08 ·
+        <a href="https://guides.rubyonrails.org/index.html">Rails Guides</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>window.RSA_BASE = "/rails-stack-advisor";</script>
+  <script src="/rails-stack-advisor/assets/js/engine.js"></script>
+  <script src="/rails-stack-advisor/assets/js/app.js"></script>
+</body>
+</html>

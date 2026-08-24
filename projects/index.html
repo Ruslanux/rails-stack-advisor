@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кейсы · Rails Stack Advisor</title>
+  <meta name="description" content="Семь реальных production-проектов на Rails 8 — стек, масштаб и извлечённые уроки.">
+  <link rel="stylesheet" href="/rails-stack-advisor/assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Кейсы | Rails Stack Advisor</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Кейсы" />
+<meta name="author" content="Ruslan" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Семь реальных production-проектов на Rails 8 — стек, масштаб и извлечённые уроки." />
+<meta name="twitter:description" property="og:description" content="Семь реальных production-проектов на Rails 8 — стек, масштаб и извлечённые уроки." />
+<link rel="canonical" href="/rails-stack-advisor/projects/" />
+<meta property="og:url" content="/rails-stack-advisor/projects/" />
+<meta property="og:site_name" content="Rails Stack Advisor" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Кейсы" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ruslan"},"description":"Семь реальных production-проектов на Rails 8 — стек, масштаб и извлечённые уроки.","headline":"Кейсы","url":"/rails-stack-advisor/projects/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rsa-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/rails-stack-advisor/">
+        <span class="brand__mark">◆</span>
+        <span class="brand__text">Rails Stack Advisor</span>
+      </a>
+      <nav class="nav">
+        
+        <a href="/rails-stack-advisor/" class="">Подборщик</a>
+        <a href="/rails-stack-advisor/compare/" class="">Сравнения</a>
+        <a href="/rails-stack-advisor/projects/" class="is-active">Кейсы</a>
+        <a href="/rails-stack-advisor/checklist/" class="">Чек-лист</a>
+        <a href="/rails-stack-advisor/glossary/" class="">Словарь</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+        <span data-theme-icon aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+  <div class="wrap">
+    <h1>Семь проектов, на которых собрана эта база</h1>
+    <p class="hero__lead">
+      Не абстрактные рекомендации, а Gemfile'ы работающих приложений: от маркетплейса с платежами
+      до мультиагентной HR-платформы на Inertia. У каждого — профиль, стек и то, что выяснилось в процессе.
+      Проекты описаны обезличенно: названия и специфика заказчиков опущены, техническая суть сохранена.
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    
+    <div class="card" style="margin-bottom:18px" id="mutual_aid">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Платформа взаимопомощи</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">15 моделей · 29 контроллеров · 30 таблиц · 47 тестов</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Заявки о помощи, отклики, чат, репутация и модерация</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.0.3</span></li><li><b>Рендеринг</b><span>SSR + Hotwire (Turbo/Stimulus)</span></li><li><b>Ассеты</b><span>Propshaft + Importmap + Tailwind</span></li><li><b>БД</b><span>PostgreSQL</span></li><li><b>Фон</b><span>Solid Queue / Cache / Cable</span></li><li><b>Auth</b><span>Devise + OmniAuth Google</span></li><li><b>Права</b><span>Pundit</span></li><li><b>Пагинация</b><span>Kaminari</span></li><li><b>Файлы</b><span>Active Storage + S3</span></li><li><b>Деплой</b><span>Kamal 2 → VPS, TLS через kamal-proxy</span></li><li><b>Наблюдаемость</b><span>Sentry + rack-attack</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>Solid Trifecta закрыла и очередь, и кэш, и чат — Redis не понадобился ни разу</li><li>Слой app/services + app/policies появился на 3-й месяц, когда контроллеры перевалили за 60 строк</li><li>Три языка интерфейса заложены сразу — доставать строки из вьюх задним числом дороже</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: mvp</span><span class="pill">domain: medium</span><span class="pill">timeline: product</span><span class="pill">ui: crud</span><span class="pill">seo: important</span><span class="pill">realtime: chat</span><span class="pill">mobile: none</span><span class="pill">team: solo</span><span class="pill">rails_exp: middle</span><span class="pill">scale: small</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: pii</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=mvp&amp;domain=medium&amp;timeline=product&amp;ui=crud&amp;seo=important&amp;realtime=chat&amp;mobile=none&amp;team=solo&amp;rails_exp=middle&amp;scale=small&amp;infra=vps_cheap&amp;compliance=pii">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="social_platform">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Социальная платформа</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">32 модели · 58 контроллеров · 33 таблицы · 139 тестов</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Профили и лента с админкой, отчётами и PDF-выгрузками</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.1.2</span></li><li><b>Рендеринг</b><span>SSR + Hotwire</span></li><li><b>Ассеты</b><span>Propshaft + Importmap + Tailwind</span></li><li><b>БД</b><span>PostgreSQL</span></li><li><b>Фон</b><span>Solid Trifecta</span></li><li><b>Auth</b><span>Devise + OmniAuth Google</span></li><li><b>Права</b><span>Pundit</span></li><li><b>Списки</b><span>Pagy + Ransack</span></li><li><b>Отчёты</b><span>Chartkick + Groupdate, Prawn для PDF, CSV-экспорт</span></li><li><b>Прочее</b><span>QR-коды, Web Push</span></li><li><b>Деплой</b><span>Kamal 2, GitHub Actions</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>Появился отдельный слой app/queries — фильтры Ransack не должны жить в контроллерах</li><li>Pagy вместо Kaminari: на списках админки разница в аллокациях заметна</li><li>Web Push + PWA дали мобильный опыт без разработки нативного приложения</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: saas</span><span class="pill">domain: medium</span><span class="pill">timeline: product</span><span class="pill">ui: rich</span><span class="pill">seo: important</span><span class="pill">realtime: notify</span><span class="pill">mobile: pwa</span><span class="pill">team: rails_small</span><span class="pill">rails_exp: middle</span><span class="pill">scale: medium</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: pii</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=saas&amp;domain=medium&amp;timeline=product&amp;ui=rich&amp;seo=important&amp;realtime=notify&amp;mobile=pwa&amp;team=rails_small&amp;rails_exp=middle&amp;scale=medium&amp;infra=vps_cheap&amp;compliance=pii">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="edu_center">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Образовательный центр</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">40 моделей · 85 контроллеров · 41 таблица · 116 тестов</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Четыре личных кабинета, двуязычный интерфейс, AI-помощник</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.1.3</span></li><li><b>Рендеринг</b><span>SSR + Hotwire, mobile-first</span></li><li><b>Ассеты</b><span>Propshaft + Importmap + Tailwind v4</span></li><li><b>БД</b><span>PostgreSQL</span></li><li><b>Фон</b><span>Solid Trifecta (без Redis)</span></li><li><b>Auth</b><span>Devise + OmniAuth Google</span></li><li><b>Права</b><span>Pundit (app/policies)</span></li><li><b>Локализация</b><span>rails-i18n, два языка</span></li><li><b>AI</b><span>LLM-помощник через официальный SDK</span></li><li><b>Прочее</b><span>QR-коды, Web Push, CSV</span></li><li><b>Деплой</b><span>Kamal 2 + GitHub Actions CI</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>85 контроллеров держатся за счёт неймспейсов по ролям кабинетов</li><li>32 сервис-объекта — граница между «что делает система» и «как это устроено»</li><li>SEO-критичная открытая часть и закрытые кабинеты живут в одном монолите без конфликтов</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: edu</span><span class="pill">domain: complex</span><span class="pill">timeline: longterm</span><span class="pill">ui: crud</span><span class="pill">seo: critical</span><span class="pill">realtime: notify</span><span class="pill">mobile: pwa</span><span class="pill">team: rails_small</span><span class="pill">rails_exp: senior</span><span class="pill">scale: medium</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: pii</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=edu&amp;domain=complex&amp;timeline=longterm&amp;ui=crud&amp;seo=critical&amp;realtime=notify&amp;mobile=pwa&amp;team=rails_small&amp;rails_exp=senior&amp;scale=medium&amp;infra=vps_cheap&amp;compliance=pii">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="marketplace">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Маркетплейс</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">41 модель · 64 контроллера · 64 сервиса · 41 таблица</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Продавцы, заказы, платежи, доставка, промокоды</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.1.2 / Ruby 4.0</span></li><li><b>Рендеринг</b><span>SSR + Hotwire</span></li><li><b>Вьюхи</b><span>Phlex (app/components) + ERB</span></li><li><b>БД</b><span>PostgreSQL + pg_search</span></li><li><b>Фон</b><span>Solid Trifecta + mission_control-jobs</span></li><li><b>Auth</b><span>bcrypt (встроенный подход) + OmniAuth</span></li><li><b>Права</b><span>CanCanCan</span></li><li><b>Состояния</b><span>AASM для жизненного цикла заказа</span></li><li><b>Деньги</b><span>money-rails, собственные адаптеры под локальных эквайеров</span></li><li><b>Списки</b><span>Pagy, discard для мягкого удаления</span></li><li><b>Защита</b><span>rack-attack, lograge, rack-mini-profiler</span></li><li><b>Тесты</b><span>RSpec + FactoryBot + SimpleCov</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>64 сервис-объекта на 41 модель — платёжные и заказные сценарии не помещаются в модели</li><li>Главный урок: без idempotency_key в таблице платежей ретрай вебхука = двойное списание</li><li>Собственные адаптеры под локальный рынок оказались уместнее готового движка электронной коммерции</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: marketplace</span><span class="pill">domain: complex</span><span class="pill">timeline: longterm</span><span class="pill">ui: rich</span><span class="pill">seo: critical</span><span class="pill">realtime: notify</span><span class="pill">mobile: pwa</span><span class="pill">team: rails_small</span><span class="pill">rails_exp: senior</span><span class="pill">scale: medium</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: fintech</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=marketplace&amp;domain=complex&amp;timeline=longterm&amp;ui=rich&amp;seo=critical&amp;realtime=notify&amp;mobile=pwa&amp;team=rails_small&amp;rails_exp=senior&amp;scale=medium&amp;infra=vps_cheap&amp;compliance=fintech">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="hr_ai">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">HR-платформа с AI-агентами</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">33 модели · 54 контроллера · 45 таблиц · 1005 тестов</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Мультиагентная автоматизация найма, интеграции с календарём и мессенджером</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.1.x / Ruby 4.0</span></li><li><b>Рендеринг</b><span>Inertia.js + React 18 + TypeScript</span></li><li><b>Ассеты</b><span>Vite Ruby (vite_rails) + Tailwind</span></li><li><b>БД</b><span>PostgreSQL</span></li><li><b>Фон</b><span>Solid Trifecta</span></li><li><b>Auth</b><span>Authentication Zero + OmniAuth</span></li><li><b>Права</b><span>Action Policy</span></li><li><b>Поиск</b><span>Meilisearch</span></li><li><b>AI</b><span>LLM-клиент, парсинг PDF и DOCX</span></li><li><b>Интеграции</b><span>Календарь, мессенджер, S3</span></li><li><b>Паттерны</b><span>Interactor, Draper, dry-validation, сериализаторы + Oj</span></li><li><b>Тесты</b><span>RSpec, FactoryBot, VCR + WebMock, SimpleCov</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>Inertia убрал необходимость версионировать API — контроллеры остались обычными Rails-контроллерами</li><li>VCR обязателен: тесты не должны ходить в LLM-провайдера</li><li>Action Policy вместо Pundit — из-за кэширования проверок на больших списках</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: ai_agent</span><span class="pill">domain: complex</span><span class="pill">timeline: longterm</span><span class="pill">ui: app_like</span><span class="pill">seo: none</span><span class="pill">realtime: notify</span><span class="pill">mobile: none</span><span class="pill">team: with_frontend</span><span class="pill">rails_exp: senior</span><span class="pill">scale: medium</span><span class="pill">infra: cloud</span><span class="pill">compliance: pii</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=ai_agent&amp;domain=complex&amp;timeline=longterm&amp;ui=app_like&amp;seo=none&amp;realtime=notify&amp;mobile=none&amp;team=with_frontend&amp;rails_exp=senior&amp;scale=medium&amp;infra=cloud&amp;compliance=pii">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="learning">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Платформа обучения программированию</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">8 моделей · 21 контроллер · 7 таблиц · 30 тестов</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Песочница исполнения кода, тесты, геймификация, JSON API</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.0.3 / Ruby 3.4</span></li><li><b>Рендеринг</b><span>SSR + Hotwire, редактор кода как остров</span></li><li><b>БД</b><span>PostgreSQL</span></li><li><b>Фон</b><span>Solid Trifecta</span></li><li><b>Auth</b><span>Devise (веб) + JWT (мобильный API)</span></li><li><b>API</b><span>JSON API с JWT для мобильных клиентов</span></li><li><b>Контент</b><span>Markdown-рендеринг уроков</span></li><li><b>Защита</b><span>rack-attack (песочница исполняет пользовательский код)</span></li><li><b>Наблюдаемость</b><span>Sentry + lograge</span></li><li><b>Деплой</b><span>Kamal 2, отдельный workflow деплоя</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>Двойная аутентификация (сессии + JWT) в одном приложении — рабочая схема, если API версионирован</li><li>Исполнение пользовательского кода требует таймаутов, лимитов памяти и жёсткого rate limit</li><li>8 моделей на серьёзный продукт — сложность была в сервисах, а не в схеме</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: edu</span><span class="pill">domain: medium</span><span class="pill">timeline: product</span><span class="pill">ui: rich</span><span class="pill">seo: critical</span><span class="pill">realtime: none</span><span class="pill">mobile: native_api</span><span class="pill">team: solo</span><span class="pill">rails_exp: senior</span><span class="pill">scale: small</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: standard</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=edu&amp;domain=medium&amp;timeline=product&amp;ui=rich&amp;seo=critical&amp;realtime=none&amp;mobile=native_api&amp;team=solo&amp;rails_exp=senior&amp;scale=small&amp;infra=vps_cheap&amp;compliance=standard">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-bottom:18px" id="catalog">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">Каталог с подбором товара</h2>
+        
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">18 моделей · 31 контроллер · 20 таблиц</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">Витрина, поиск по характеристикам, компонентный UI</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            <li><b>Rails</b><span>8.1.2</span></li><li><b>Рендеринг</b><span>SSR + Hotwire</span></li><li><b>Вьюхи</b><span>Phlex (app/components)</span></li><li><b>БД</b><span>PostgreSQL + pg_search</span></li><li><b>Фон</b><span>Solid Trifecta</span></li><li><b>Auth</b><span>bcrypt + OmniAuth</span></li><li><b>Списки</b><span>Pagy</span></li><li><b>Документы</b><span>Prawn (PDF)</span></li><li><b>Защита</b><span>rack-attack, lograge</span></li><li><b>Деплой</b><span>Kamal 2</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            <li>pg_search снял вопрос поиска по каталогу без отдельного сервиса</li><li>Phlex окупился на повторяющихся карточках товара — вёрстка стала обычным Ruby</li><li>Тесты отложили «на потом» — и это единственный проект из семи, где их нет</li>
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            <span class="pill">project_type: content</span><span class="pill">domain: simple</span><span class="pill">timeline: mvp_term</span><span class="pill">ui: crud</span><span class="pill">seo: critical</span><span class="pill">realtime: none</span><span class="pill">mobile: pwa</span><span class="pill">team: solo</span><span class="pill">rails_exp: middle</span><span class="pill">scale: small</span><span class="pill">infra: vps_cheap</span><span class="pill">compliance: standard</span>
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="/rails-stack-advisor/?project_type=content&amp;domain=simple&amp;timeline=mvp_term&amp;ui=crud&amp;seo=critical&amp;realtime=none&amp;mobile=pwa&amp;team=solo&amp;rails_exp=middle&amp;scale=small&amp;infra=vps_cheap&amp;compliance=standard">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>
+        <strong>Rails Stack Advisor</strong> — база знаний собрана из семи production-проектов на Rails,
+        рабочих заметок и официальных гайдов.
+      </div>
+      <div class="footer__meta">
+        Ориентир: Rails 8.1 · Ruby 3.4.4 ·
+        обновлено 2026-08 ·
+        <a href="https://guides.rubyonrails.org/index.html">Rails Guides</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>window.RSA_BASE = "/rails-stack-advisor";</script>
+  <script src="/rails-stack-advisor/assets/js/engine.js"></script>
+  <script src="/rails-stack-advisor/assets/js/app.js"></script>
+</body>
+</html>

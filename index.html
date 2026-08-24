@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rails Stack Advisor — Выбор подхода, архитектуры и стека для Ruby on Rails</title>
+  <meta name="description" content="Интерактивный подборщик стека, архитектуры и конфигурации Ruby on Rails 8: рендеринг, фронтенд, фон/кэш, аутентификация, тестирование, деплой — с обоснованием каждого решения и генерацией плана реализации.">
+  <link rel="stylesheet" href="/rails-stack-advisor/assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Rails Stack Advisor | Выбор подхода, архитектуры и стека для Ruby on Rails</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Rails Stack Advisor" />
+<meta name="author" content="Ruslan" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Интерактивный подборщик стека, архитектуры и конфигурации Ruby on Rails 8: рендеринг, фронтенд, фон/кэш, аутентификация, тестирование, деплой — с обоснованием каждого решения и генерацией плана реализации." />
+<meta name="twitter:description" property="og:description" content="Интерактивный подборщик стека, архитектуры и конфигурации Ruby on Rails 8: рендеринг, фронтенд, фон/кэш, аутентификация, тестирование, деплой — с обоснованием каждого решения и генерацией плана реализации." />
+<link rel="canonical" href="/rails-stack-advisor/" />
+<meta property="og:url" content="/rails-stack-advisor/" />
+<meta property="og:site_name" content="Rails Stack Advisor" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Rails Stack Advisor" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Ruslan"},"description":"Интерактивный подборщик стека, архитектуры и конфигурации Ruby on Rails 8: рендеринг, фронтенд, фон/кэш, аутентификация, тестирование, деплой — с обоснованием каждого решения и генерацией плана реализации.","headline":"Rails Stack Advisor","name":"Rails Stack Advisor","url":"/rails-stack-advisor/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rsa-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/rails-stack-advisor/">
+        <span class="brand__mark">◆</span>
+        <span class="brand__text">Rails Stack Advisor</span>
+      </a>
+      <nav class="nav">
+        
+        <a href="/rails-stack-advisor/" class="is-active">Подборщик</a>
+        <a href="/rails-stack-advisor/compare/" class="">Сравнения</a>
+        <a href="/rails-stack-advisor/projects/" class="">Кейсы</a>
+        <a href="/rails-stack-advisor/checklist/" class="">Чек-лист</a>
+        <a href="/rails-stack-advisor/glossary/" class="">Словарь</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+        <span data-theme-icon aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+  <div class="wrap">
+    <h1>Какой стек взять для <em>этого</em> проекта на Rails</h1>
+    <p class="hero__lead">
+      Опишите проект двенадцатью ответами — получите конфигурацию по двадцати слоям решений
+      с обоснованием каждого выбора, командой <code>rails new</code>, списком гемов,
+      предупреждениями и планом реализации по фазам.
+    </p>
+    <div class="hero__stats" id="kbStats"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div id="advisor">
+      <div class="toolbar" id="presets"></div>
+      <div class="qgroups" id="questions">
+        <div class="card dim">Загружаем базу знаний…</div>
+      </div>
+      <div id="report"></div>
+    </div>
+  </div>
+</section>
+
+<div class="stickybar" id="stickybar">
+  <div class="stickybar__inner">
+    <div class="stickybar__txt" id="stickyText"></div>
+    <button class="btn btn--primary btn--sm" data-action="to-report">К рекомендации ↓</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>
+        <strong>Rails Stack Advisor</strong> — база знаний собрана из семи production-проектов на Rails,
+        рабочих заметок и официальных гайдов.
+      </div>
+      <div class="footer__meta">
+        Ориентир: Rails 8.1 · Ruby 3.4.4 ·
+        обновлено 2026-08 ·
+        <a href="https://guides.rubyonrails.org/index.html">Rails Guides</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>window.RSA_BASE = "/rails-stack-advisor";</script>
+  <script src="/rails-stack-advisor/assets/js/engine.js"></script>
+  <script src="/rails-stack-advisor/assets/js/app.js"></script>
+</body>
+</html>

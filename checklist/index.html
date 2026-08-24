@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чек-лист готовности к продакшену · Rails Stack Advisor</title>
+  <meta name="description" content="Что должно быть сделано в Rails-приложении до того, как на него пустят реальных пользователей.">
+  <link rel="stylesheet" href="/rails-stack-advisor/assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Чек-лист готовности к продакшену | Rails Stack Advisor</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Чек-лист готовности к продакшену" />
+<meta name="author" content="Ruslan" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Что должно быть сделано в Rails-приложении до того, как на него пустят реальных пользователей." />
+<meta name="twitter:description" property="og:description" content="Что должно быть сделано в Rails-приложении до того, как на него пустят реальных пользователей." />
+<link rel="canonical" href="/rails-stack-advisor/checklist/" />
+<meta property="og:url" content="/rails-stack-advisor/checklist/" />
+<meta property="og:site_name" content="Rails Stack Advisor" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Чек-лист готовности к продакшену" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ruslan"},"description":"Что должно быть сделано в Rails-приложении до того, как на него пустят реальных пользователей.","headline":"Чек-лист готовности к продакшену","url":"/rails-stack-advisor/checklist/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rsa-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/rails-stack-advisor/">
+        <span class="brand__mark">◆</span>
+        <span class="brand__text">Rails Stack Advisor</span>
+      </a>
+      <nav class="nav">
+        
+        <a href="/rails-stack-advisor/" class="">Подборщик</a>
+        <a href="/rails-stack-advisor/compare/" class="">Сравнения</a>
+        <a href="/rails-stack-advisor/projects/" class="">Кейсы</a>
+        <a href="/rails-stack-advisor/checklist/" class="is-active">Чек-лист</a>
+        <a href="/rails-stack-advisor/glossary/" class="">Словарь</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+        <span data-theme-icon aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+  <div class="wrap">
+    <h1>Чек-лист готовности к продакшену</h1>
+    <p class="hero__lead">Список, который стоит пройти до первого настоящего пользователя. Собран по семи проектам — почти каждый пункт здесь однажды был пропущен.</p>
+  </div>
+</section>
+
+<section class="block"><div class="wrap"><div class="prose">
+
+      <h2 id="section">Данные</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ограничения на уровне БД, а не только валидации в моделях: <code class="language-plaintext highlighter-rouge">NOT NULL</code>, внешние ключи, уникальные индексы</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Индексы под все внешние ключи и под поля, по которым идёт фильтрация и сортировка</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ни одного запроса без <code class="language-plaintext highlighter-rouge">limit</code> там, где коллекция может расти неограниченно</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Все списки страничные — с первого дня, а не «когда записей станет много»</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Автоматический бэкап <strong>и проверенное восстановление</strong> (бэкап без теста восстановления бэкапом не является)</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Файлы Active Storage бэкапятся отдельно от базы</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">db/seeds.rb</code> создаёт реалистичный объём данных — иначе производительность списков не проверить</li>
+      </ul>
+
+      <h2 id="section-1">Производительность</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Прогнать основные страницы на объёме данных, близком к боевому</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ни одного N+1 на ключевых экранах: <code class="language-plaintext highlighter-rouge">includes</code>/<code class="language-plaintext highlighter-rouge">preload</code> расставлены, Bullet молчит</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Кэширование фрагментов на тяжёлых карточках и списках</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Всё, что дольше 300 мс, вынесено в фоновую задачу</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Варианты изображений генерируются заранее или лениво, но не в цикле рендера</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Проверено время холодного старта после деплоя (health-check <code class="language-plaintext highlighter-rouge">/up</code> + Thruster)</li>
+      </ul>
+
+      <h2 id="section-2">Безопасность</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">bin/brakeman</code> — ноль предупреждений или каждое разобрано и задокументировано</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">bin/bundle-audit check --update</code> в CI</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Strong parameters везде; ни одного <code class="language-plaintext highlighter-rouge">params.permit!</code></li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Авторизация проверяется <strong>и</strong> на объекте, и на коллекции (<code class="language-plaintext highlighter-rouge">Policy::Scope</code> / <code class="language-plaintext highlighter-rouge">accessible_by</code>)</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Тест на каждый негативный сценарий: чужой объект отдаёт 403 или 404</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">Rack::Attack</code> на вход, регистрацию, восстановление пароля, поиск и API</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Content Security Policy включена и проверена в браузере</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Секреты только в <code class="language-plaintext highlighter-rouge">credentials</code> или в переменных окружения — ни одного в репозитории</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">omniauth-rails_csrf_protection</code> подключён, если используется OmniAuth</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ransack ограничен явным <code class="language-plaintext highlighter-rouge">ransackable_attributes</code></li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Загрузка файлов: белый список content-type, лимит размера, проверка реального типа</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Персональные данные не утекают в логи и в трекер ошибок (<code class="language-plaintext highlighter-rouge">filter_parameters</code>, <code class="language-plaintext highlighter-rouge">before_send</code>)</li>
+      </ul>
+
+      <h2 id="section-3">Деньги (если они есть)</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">idempotency_key</code> с уникальным индексом в таблице платежей</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Подпись вебхука проверяется до любой обработки</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Повторный вебхук с тем же идентификатором обрабатывается ровно один раз</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Переходы статуса заказа защищены машиной состояний, а не <code class="language-plaintext highlighter-rouge">if</code>-ами</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ежедневная сверка с эквайером и отчёт о расхождениях</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Суммы хранятся в минорных единицах (копейках) целым числом, не <code class="language-plaintext highlighter-rouge">float</code></li>
+      </ul>
+
+      <h2 id="section-4">Наблюдаемость</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Трекер ошибок подключён, тестовое исключение проверено</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">lograge</code> включён — одна структурированная строка на запрос</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Внешний uptime-мониторинг стучится в <code class="language-plaintext highlighter-rouge">/up</code></li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Дашборд фоновых задач доступен и защищён авторизацией</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Алерт на рост очереди мёртвых задач</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">RAILS_LOG_LEVEL=info</code> на проде, ротация логов настроена</li>
+      </ul>
+
+      <h2 id="section-5">Процесс</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />CI гоняет тесты, RuboCop и Brakeman на каждый push</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Staging-окружение, максимально похожее на прод</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Откат релиза проверен на практике, а не в теории (<code class="language-plaintext highlighter-rouge">kamal rollback</code>)</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Runbook: как зайти в консоль, посмотреть логи, откатиться, восстановить БД</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">bin/setup</code> работает на чистой машине — это и есть документация для новых разработчиков</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Dependabot или регулярное обновление зависимостей</li>
+      </ul>
+
+      <h2 id="section-6">Юридическое и продуктовое</h2>
+
+      <ul class="task-list">
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Политика конфиденциальности и условия использования</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Процедура удаления персональных данных по запросу</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Страницы 404, 422 и 500 оформлены и не раскрывают внутренности</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">robots.txt</code> и <code class="language-plaintext highlighter-rouge">sitemap.xml</code>, если публичная часть индексируется</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Мета-теги, Open Graph и корректные заголовки страниц</li>
+        <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Почта уходит с настроенными SPF/DKIM — иначе всё попадёт в спам</li>
+      </ul>
+
+    </div></div></section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>
+        <strong>Rails Stack Advisor</strong> — база знаний собрана из семи production-проектов на Rails,
+        рабочих заметок и официальных гайдов.
+      </div>
+      <div class="footer__meta">
+        Ориентир: Rails 8.1 · Ruby 3.4.4 ·
+        обновлено 2026-08 ·
+        <a href="https://guides.rubyonrails.org/index.html">Rails Guides</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>window.RSA_BASE = "/rails-stack-advisor";</script>
+  <script src="/rails-stack-advisor/assets/js/engine.js"></script>
+  <script src="/rails-stack-advisor/assets/js/app.js"></script>
+</body>
+</html>

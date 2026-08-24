@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сравнения · Rails Stack Advisor</title>
+  <meta name="description" content="Прямые сравнения технологий Rails — SSR/CSR/SSG, Solid Trifecta vs Sidekiq, Devise vs Rails 8 auth, Pundit vs CanCanCan, Kamal vs PaaS и другие.">
+  <link rel="stylesheet" href="/rails-stack-advisor/assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Сравнения | Rails Stack Advisor</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Сравнения" />
+<meta name="author" content="Ruslan" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Прямые сравнения технологий Rails — SSR/CSR/SSG, Solid Trifecta vs Sidekiq, Devise vs Rails 8 auth, Pundit vs CanCanCan, Kamal vs PaaS и другие." />
+<meta name="twitter:description" property="og:description" content="Прямые сравнения технологий Rails — SSR/CSR/SSG, Solid Trifecta vs Sidekiq, Devise vs Rails 8 auth, Pundit vs CanCanCan, Kamal vs PaaS и другие." />
+<link rel="canonical" href="/rails-stack-advisor/compare/" />
+<meta property="og:url" content="/rails-stack-advisor/compare/" />
+<meta property="og:site_name" content="Rails Stack Advisor" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Сравнения" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ruslan"},"description":"Прямые сравнения технологий Rails — SSR/CSR/SSG, Solid Trifecta vs Sidekiq, Devise vs Rails 8 auth, Pundit vs CanCanCan, Kamal vs PaaS и другие.","headline":"Сравнения","url":"/rails-stack-advisor/compare/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rsa-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/rails-stack-advisor/">
+        <span class="brand__mark">◆</span>
+        <span class="brand__text">Rails Stack Advisor</span>
+      </a>
+      <nav class="nav">
+        
+        <a href="/rails-stack-advisor/" class="">Подборщик</a>
+        <a href="/rails-stack-advisor/compare/" class="is-active">Сравнения</a>
+        <a href="/rails-stack-advisor/projects/" class="">Кейсы</a>
+        <a href="/rails-stack-advisor/checklist/" class="">Чек-лист</a>
+        <a href="/rails-stack-advisor/glossary/" class="">Словарь</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+        <span data-theme-icon aria-hidden="true">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+  <div class="wrap">
+    <h1>Сравнения лоб в лоб</h1>
+    <p class="hero__lead">
+      Двенадцать развилок, на которых чаще всего застревают Rails-проекты. Каждая таблица
+      заканчивается вердиктом — что брать по умолчанию и когда от этого умолчания отступать.
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="toc">
+      <ol>
+        
+        <li><a href="#rendering">SSR vs CSR vs SSG</a></li>
+        
+        <li><a href="#solid_vs_redis">Solid Trifecta vs Redis + Sidekiq</a></li>
+        
+        <li><a href="#auth">Аутентификация: встроенная vs Devise vs Authentication Zero vs Rodauth</a></li>
+        
+        <li><a href="#authorization">Авторизация: Pundit vs CanCanCan vs Action Policy</a></li>
+        
+        <li><a href="#testing">Minitest vs RSpec</a></li>
+        
+        <li><a href="#assets">Importmap vs esbuild vs Vite</a></li>
+        
+        <li><a href="#views">ERB vs ViewComponent vs Phlex</a></li>
+        
+        <li><a href="#api">REST vs GraphQL vs gRPC</a></li>
+        
+        <li><a href="#architecture">Монолит vs Модульный монолит vs Микросервисы</a></li>
+        
+        <li><a href="#deploy">Kamal vs PaaS vs Kubernetes</a></li>
+        
+        <li><a href="#pagination">Pagy vs Kaminari vs курсорная пагинация</a></li>
+        
+        <li><a href="#monolith_frontend">Hotwire vs Inertia vs SPA + API</a></li>
+        
+      </ol>
+    </div>
+
+    
+    <div style="margin-bottom:44px" id="rendering">
+      <h2>SSR vs CSR vs SSG</h2>
+      <p class="lead">Где именно собирается HTML — определяющий выбор, от него зависят SEO, скорость первого экрана и вся структура фронтенда.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>SSR</th><th>CSR</th><th>SSG</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Где рендерится HTML</th>
+              <td>На сервере при каждом запросе</td><td>В браузере из пустого HTML + JS</td><td>На сборке, один раз</td>
+            </tr>
+            
+            <tr>
+              <th>Первый экран</th>
+              <td>Быстро — HTML готов</td><td>Медленно — сначала грузится JS</td><td>Мгновенно — файл с CDN</td>
+            </tr>
+            
+            <tr>
+              <th>SEO</th>
+              <td>Отлично</td><td>Требует SSR-прослойки или пререндера</td><td>Идеально</td>
+            </tr>
+            
+            <tr>
+              <th>Персонализация</th>
+              <td>Любая</td><td>Любая</td><td>Только на клиенте через API</td>
+            </tr>
+            
+            <tr>
+              <th>Данные в реальном времени</th>
+              <td>Turbo Streams / WebSocket</td><td>Родная территория</td><td>Невозможно без внешнего сервиса</td>
+            </tr>
+            
+            <tr>
+              <th>Стоимость хостинга</th>
+              <td>Сервер</td><td>Сервер для API + статика</td><td>Бесплатно (GitHub Pages)</td>
+            </tr>
+            
+            <tr>
+              <th>В Rails это</th>
+              <td>ERB/Phlex + Hotwire — дефолт</td><td>Rails API + React/Vue</td><td>Jekyll, Bridgetown, Nanoc</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Для Rails по умолчанию берите SSR + Hotwire. CSR оправдан только при клиентском приложении с богатым состоянием. SSG — для контента без пользовательских данных (эта страница именно такая).</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="solid_vs_redis">
+      <h2>Solid Trifecta vs Redis + Sidekiq</h2>
+      <p class="lead">Rails 8 сделал ставку на базу данных вместо Redis. Разбираемся, где эта ставка выигрывает, а где нет.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Solid Trifecta</th><th>Sidekiq + Redis</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Хранилище</th>
+              <td>Ваша БД (PostgreSQL/SQLite/MySQL)</td><td>Redis</td>
+            </tr>
+            
+            <tr>
+              <th>Сервисов в проде</th>
+              <td>0 дополнительных</td><td>+1 (Redis: память, персистентность, мониторинг)</td>
+            </tr>
+            
+            <tr>
+              <th>Пропускная способность</th>
+              <td>Тысячи задач/мин</td><td>Десятки тысяч задач/мин</td>
+            </tr>
+            
+            <tr>
+              <th>Транзакционность</th>
+              <td>Задача ставится в той же транзакции, что и данные</td><td>Задача может стартовать до коммита — нужен after_commit</td>
+            </tr>
+            
+            <tr>
+              <th>Отладка</th>
+              <td>Обычный SQL по таблице задач</td><td>Через дашборд и redis-cli</td>
+            </tr>
+            
+            <tr>
+              <th>Дашборд</th>
+              <td>mission_control-jobs</td><td>Sidekiq Web (зрелый)</td>
+            </tr>
+            
+            <tr>
+              <th>История выполнения</th>
+              <td>Rails 8.1 архивирует задачи вместо удаления</td><td>Только в Pro/Enterprise</td>
+            </tr>
+            
+            <tr>
+              <th>Кэш</th>
+              <td>Solid Cache — на диске, объём в десятки ГБ дёшево</td><td>Redis — в RAM, объём стоит денег</td>
+            </tr>
+            
+            <tr>
+              <th>WebSocket</th>
+              <td>Solid Cable</td><td>Redis pub/sub</td>
+            </tr>
+            
+            <tr>
+              <th>Стоимость</th>
+              <td>Ноль сверх уже оплаченной БД</td><td>$10–100+/мес за managed Redis</td>
+            </tr>
+            
+            <tr>
+              <th>Когда выбирать</th>
+              <td>До ~50 тыс. активных пользователей, один-два сервера</td><td>Пиковые нагрузки, сложные ретраи, троттлинг, уникальность задач</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Начинайте с Solid Trifecta — она дефолт в Rails 8 и снимает целый сервис из эксплуатации. Переезжайте на Sidekiq, когда очередь начнёт конкурировать с вебом за ресурсы БД, а не «на всякий случай».</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="auth">
+      <h2>Аутентификация: встроенная vs Devise vs Authentication Zero vs Rodauth</h2>
+      <p class="lead">Rails 8 добавил генератор аутентификации — но это не значит, что Devise больше не нужен.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Rails 8 generate authentication</th><th>Devise</th><th>Authentication Zero</th><th>Rodauth</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Тип</th>
+              <td>Генератор, код ваш</td><td>Рантайм-гем</td><td>Генератор, код ваш</td><td>Рантайм-гем + свой DSL</td>
+            </tr>
+            
+            <tr>
+              <th>Сессии и вход</th>
+              <td>Есть</td><td>Есть</td><td>Есть</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Сброс пароля</th>
+              <td>Есть</td><td>Есть (recoverable)</td><td>Есть</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Подтверждение почты</th>
+              <td>Пишете сами</td><td>Есть (confirmable)</td><td>Есть</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Блокировка после попыток</th>
+              <td>Пишете сами</td><td>Есть (lockable)</td><td>Есть</td><td>Есть + защита от таймингов</td>
+            </tr>
+            
+            <tr>
+              <th>2FA / TOTP</th>
+              <td>Пишете сами</td><td>Через сторонние гемы</td><td>Есть из коробки</td><td>TOTP, SMS, WebAuthn, коды восстановления</td>
+            </tr>
+            
+            <tr>
+              <th>API-токены</th>
+              <td>Пишете сами</td><td>devise-jwt отдельно</td><td>Генерируются сразу</td><td>Есть (JWT-функция)</td>
+            </tr>
+            
+            <tr>
+              <th>OmniAuth</th>
+              <td>Подключаете сами</td><td>Официально поддержан</td><td>Генерируется</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Порог входа</th>
+              <td>Низкий</td><td>Низкий</td><td>Средний</td><td>Высокий</td>
+            </tr>
+            
+            <tr>
+              <th>Кто сопровождает код</th>
+              <td>Вы</td><td>Мейнтейнеры гема</td><td>Вы</td><td>Мейнтейнеры гема</td>
+            </tr>
+            
+            <tr>
+              <th>Когда выбирать</th>
+              <td>MVP, внутренние инструменты, обучение</td><td>Продукт с полным набором сценариев</td><td>Смешанный веб + API, Inertia/SPA</td><td>Финтех, госсистемы, жёсткие требования безопасности</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> MVP и внутренние системы — встроенный генератор. Публичный продукт с почтой, блокировками и соцвходом — Devise. Веб + мобильный API одновременно — Authentication Zero. Регуляторные требования — Rodauth.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="authorization">
+      <h2>Авторизация: Pundit vs CanCanCan vs Action Policy</h2>
+      <p class="lead">Три способа ответить на вопрос «можно ли этому пользователю сделать это с этим объектом».</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Pundit</th><th>CanCanCan</th><th>Action Policy</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Модель</th>
+              <td>Класс политики на ресурс</td><td>Один Ability-класс на всё</td><td>Классы политик + композиция</td>
+            </tr>
+            
+            <tr>
+              <th>Фильтрация коллекций</th>
+              <td>Policy::Scope</td><td>accessible_by</td><td>Scoping с несколькими типами</td>
+            </tr>
+            
+            <tr>
+              <th>Кэширование проверок</th>
+              <td>Нет</td><td>Нет</td><td>Есть (важно на списках)</td>
+            </tr>
+            
+            <tr>
+              <th>Причина отказа</th>
+              <td>Нет</td><td>Нет</td><td>failure_reasons — можно показать пользователю</td>
+            </tr>
+            
+            <tr>
+              <th>Защита от забытой проверки</th>
+              <td>verify_authorized</td><td>Через check_authorization</td><td>Проверка покрытия политик в тестах</td>
+            </tr>
+            
+            <tr>
+              <th>Читаемость при 3 ролях</th>
+              <td>Хорошая</td><td>Отличная — вся картина в одном файле</td><td>Хорошая</td>
+            </tr>
+            
+            <tr>
+              <th>Читаемость при 10+ ролях</th>
+              <td>Хорошая</td><td>Плохая — файл на 1000 строк</td><td>Отличная</td>
+            </tr>
+            
+            <tr>
+              <th>Порог входа</th>
+              <td>Низкий</td><td>Очень низкий</td><td>Средний</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Pundit — безопасный выбор по умолчанию. CanCanCan — когда матрица «роль × ресурс» простая и хочется видеть её целиком. Action Policy — сложные правила, большие списки и большая команда.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="testing">
+      <h2>Minitest vs RSpec</h2>
+      <p class="lead">Спор старый, но выбор влияет на скорость прогона и на то, как читается набор тестов через год.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Minitest</th><th>RSpec</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Установка</th>
+              <td>Уже есть после rails new</td><td>rspec-rails + генератор</td>
+            </tr>
+            
+            <tr>
+              <th>Скорость старта</th>
+              <td>Быстрее</td><td>Медленнее (загрузка DSL)</td>
+            </tr>
+            
+            <tr>
+              <th>Данные для тестов</th>
+              <td>Fixtures — грузятся один раз</td><td>FactoryBot — гибче, но дороже</td>
+            </tr>
+            
+            <tr>
+              <th>Синтаксис</th>
+              <td>Обычные классы и assert</td><td>describe/context/it — читается как спецификация</td>
+            </tr>
+            
+            <tr>
+              <th>Вывод при падении</th>
+              <td>Скупой</td><td>Подробный, с дифом</td>
+            </tr>
+            
+            <tr>
+              <th>Параллелизация</th>
+              <td>Из коробки, порог 50 тестов</td><td>Через parallel_tests</td>
+            </tr>
+            
+            <tr>
+              <th>Экосистема</th>
+              <td>Меньше, но всё нужное есть</td><td>vcr, rswag, shoulda-matchers, simplecov</td>
+            </tr>
+            
+            <tr>
+              <th>В гайдах Rails</th>
+              <td>Основной вариант</td><td>Не рассматривается</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Соло и небольшие команды — Minitest: он уже есть и быстрее. Команда от 5 человек, сложный домен или требования к отчётности — RSpec. Главная ошибка — не выбор фреймворка, а отсутствие тестов вообще.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="assets">
+      <h2>Importmap vs esbuild vs Vite</h2>
+      <p class="lead">Три способа доставить JavaScript в браузер — от полного отсутствия сборки до полноценного дев-сервера.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Importmap</th><th>esbuild (jsbundling)</th><th>Vite Ruby</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Сборка</th>
+              <td>Нет вообще</td><td>Есть, миллисекунды</td><td>Есть + dev-сервер</td>
+            </tr>
+            
+            <tr>
+              <th>node_modules</th>
+              <td>Не нужен</td><td>Нужен</td><td>Нужен</td>
+            </tr>
+            
+            <tr>
+              <th>HMR</th>
+              <td>Нет</td><td>Нет (только перезагрузка)</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Tree-shaking</th>
+              <td>Нет</td><td>Есть</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>Код-сплиттинг</th>
+              <td>Нет</td><td>Есть</td><td>Есть, автоматический</td>
+            </tr>
+            
+            <tr>
+              <th>TypeScript / JSX</th>
+              <td>Практически нет</td><td>Есть</td><td>Первоклассная поддержка</td>
+            </tr>
+            
+            <tr>
+              <th>Размер Docker-образа</th>
+              <td>Минимальный</td><td>Больше на node_modules</td><td>Больше на node_modules</td>
+            </tr>
+            
+            <tr>
+              <th>Когда выбирать</th>
+              <td>Hotwire, немного JS — дефолт Rails 8</td><td>Hotwire + npm-библиотеки</td><td>Inertia, React/Vue, TypeScript</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Importmap по умолчанию. esbuild — когда понадобился первый серьёзный npm-пакет. Vite — как только фронтенд стал компонентным. Webpacker для новых проектов не выбирают: он заброшен.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="views">
+      <h2>ERB vs ViewComponent vs Phlex</h2>
+      <p class="lead">Чем описывать разметку, когда партиалов стало больше пятидесяти.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>ERB + партиалы</th><th>ViewComponent</th><th>Phlex</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Контракт компонента</th>
+              <td>Неявный — какие locals нужны, знает только автор</td><td>Явный: аргументы initialize</td><td>Явный: аргументы initialize</td>
+            </tr>
+            
+            <tr>
+              <th>Файлов на компонент</th>
+              <td>1</td><td>2 (класс + шаблон)</td><td>1 (только Ruby)</td>
+            </tr>
+            
+            <tr>
+              <th>Изолированные тесты</th>
+              <td>Практически нет</td><td>render_inline — быстрые юнит-тесты</td><td>Обычный вызов метода</td>
+            </tr>
+            
+            <tr>
+              <th>Копирование вёрстки из макета</th>
+              <td>Прямо как есть</td><td>Прямо как есть</td><td>Нужно переписать в Ruby</td>
+            </tr>
+            
+            <tr>
+              <th>Производительность</th>
+              <td>Базовая</td><td>Быстрее партиалов</td><td>Самая быстрая</td>
+            </tr>
+            
+            <tr>
+              <th>Зрелость</th>
+              <td>Максимальная</td><td>Высокая (GitHub в проде)</td><td>Растущее сообщество</td>
+            </tr>
+            
+            <tr>
+              <th>Порог входа</th>
+              <td>Нулевой</td><td>Низкий</td><td>Средний</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Начинайте с ERB. Вводите ViewComponent, когда один и тот же блок разметки встречается в третий раз. Phlex — если команда сильна в Ruby и хочет рефакторить вёрстку инструментами IDE.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="api">
+      <h2>REST vs GraphQL vs gRPC</h2>
+      <p class="lead">Контракт с внешним миром: разные протоколы — разные проблемы.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>REST</th><th>GraphQL</th><th>gRPC</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Формат</th>
+              <td>JSON поверх HTTP</td><td>JSON, один эндпоинт</td><td>Protobuf, бинарный</td>
+            </tr>
+            
+            <tr>
+              <th>Из браузера</th>
+              <td>Напрямую</td><td>Напрямую</td><td>Только через grpc-web/прокси</td>
+            </tr>
+            
+            <tr>
+              <th>HTTP-кэширование</th>
+              <td>Работает штатно</td><td>Практически нет</td><td>Нет</td>
+            </tr>
+            
+            <tr>
+              <th>Over-fetching</th>
+              <td>Есть — клиент берёт лишнее</td><td>Нет — клиент выбирает поля</td><td>Нет — контракт жёсткий</td>
+            </tr>
+            
+            <tr>
+              <th>Риск N+1</th>
+              <td>Контролируется в контроллере</td><td>Высокий — нужен dataloader</td><td>Контролируется</td>
+            </tr>
+            
+            <tr>
+              <th>Авторизация</th>
+              <td>На уровне действия</td><td>На каждом поле</td><td>На уровне метода</td>
+            </tr>
+            
+            <tr>
+              <th>Поддержка в Ruby</th>
+              <td>Родная</td><td>graphql-ruby — зрелый</td><td>Слабая относительно Go/Java</td>
+            </tr>
+            
+            <tr>
+              <th>Когда выбирать</th>
+              <td>Почти всегда</td><td>Много разных клиентов с разными потребностями</td><td>Внутренний обмен между сервисами под нагрузкой</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> REST по умолчанию. GraphQL — когда несколько независимых клиентов просят разные срезы одних данных. gRPC — только для сервис-сервис обмена, и почти никогда как первый выбор в Rails.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="architecture">
+      <h2>Монолит vs Модульный монолит vs Микросервисы</h2>
+      <p class="lead">Границы системы стоит проводить по командам, а не по сущностям.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Монолит</th><th>Модульный монолит</th><th>Микросервисы</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Деплой</th>
+              <td>Один</td><td>Один</td><td>N независимых</td>
+            </tr>
+            
+            <tr>
+              <th>Транзакции между модулями</th>
+              <td>Обычные, БД гарантирует</td><td>Обычные</td><td>Saga, eventual consistency</td>
+            </tr>
+            
+            <tr>
+              <th>Границы</th>
+              <td>Держатся на дисциплине</td><td>Проверяются статически (Packwerk)</td><td>Физические</td>
+            </tr>
+            
+            <tr>
+              <th>Отладка сценария</th>
+              <td>Один стек-трейс</td><td>Один стек-трейс</td><td>Распределённая трассировка</td>
+            </tr>
+            
+            <tr>
+              <th>Независимое масштабирование</th>
+              <td>Нет</td><td>Нет</td><td>Да</td>
+            </tr>
+            
+            <tr>
+              <th>Порог по размеру команды</th>
+              <td>1–10</td><td>5–30</td><td>20+</td>
+            </tr>
+            
+            <tr>
+              <th>Инфраструктурный налог</th>
+              <td>Минимальный</td><td>Минимальный</td><td>Высокий: discovery, трейсинг, контракты</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Почти всем нужен монолит. Модульный монолит — когда команд стало больше одной. Микросервисы — когда независимый деплой команд стоит дороже, чем накладные расходы распределённой системы. Обратный путь (из микросервисов в монолит) проходили многие.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="deploy">
+      <h2>Kamal vs PaaS vs Kubernetes</h2>
+      <p class="lead">Rails 8 генерирует Dockerfile и config/deploy.yml — деплой на свой сервер стал дефолтом.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kamal 2 → VPS</th><th>PaaS (Render/Fly/Heroku)</th><th>Kubernetes</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Стоимость на старте</th>
+              <td>$5–40/мес</td><td>$25–200/мес</td><td>$100+/мес и платформенная команда</td>
+            </tr>
+            
+            <tr>
+              <th>Время до первого деплоя</th>
+              <td>Часы</td><td>Минуты</td><td>Дни–недели</td>
+            </tr>
+            
+            <tr>
+              <th>Zero-downtime</th>
+              <td>Есть, через kamal-proxy</td><td>Есть</td><td>Есть</td>
+            </tr>
+            
+            <tr>
+              <th>TLS</th>
+              <td>Автоматически (Let's Encrypt)</td><td>Автоматически</td><td>cert-manager</td>
+            </tr>
+            
+            <tr>
+              <th>Rollback</th>
+              <td>kamal rollback</td><td>Одна кнопка</td><td>kubectl rollout undo</td>
+            </tr>
+            
+            <tr>
+              <th>Кто обслуживает ОС</th>
+              <td>Вы</td><td>Платформа</td><td>Платформенная команда</td>
+            </tr>
+            
+            <tr>
+              <th>Автоскейл</th>
+              <td>Нет (руками добавить сервер)</td><td>Есть</td><td>Есть, тонко настраиваемый</td>
+            </tr>
+            
+            <tr>
+              <th>Vendor lock</th>
+              <td>Нет — любой сервер с SSH</td><td>Есть</td><td>Нет, но сложность высока</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Kamal на VPS — лучшее соотношение цены и контроля для 95% Rails-проектов. PaaS — когда время дороже денег. Kubernetes — только если он уже есть в компании.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="pagination">
+      <h2>Pagy vs Kaminari vs курсорная пагинация</h2>
+      <p class="lead">Мелочь, которая заметна на списках из сотен тысяч записей.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Pagy</th><th>Kaminari</th><th>Keyset / cursor</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Аллокации на страницу</th>
+              <td>Минимальные</td><td>В разы больше</td><td>Минимальные</td>
+            </tr>
+            
+            <tr>
+              <th>Зависимости</th>
+              <td>Нет</td><td>Есть</td><td>Нет</td>
+            </tr>
+            
+            <tr>
+              <th>Переход на N-ю страницу</th>
+              <td>Да</td><td>Да</td><td>Нет</td>
+            </tr>
+            
+            <tr>
+              <th>Время ответа на глубоких страницах</th>
+              <td>Деградирует (OFFSET)</td><td>Деградирует (OFFSET)</td><td>Постоянное</td>
+            </tr>
+            
+            <tr>
+              <th>Стабильность при вставках</th>
+              <td>Записи «прыгают»</td><td>Записи «прыгают»</td><td>Стабильно</td>
+            </tr>
+            
+            <tr>
+              <th>Готовые шаблоны</th>
+              <td>Хелперы под Tailwind/Bootstrap</td><td>Генератор вьюх</td><td>Пишете сами</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Pagy — разумный дефолт. Kaminari — если нужны настраиваемые шаблоны в админке. Курсорная — для бесконечных лент и мобильного API. Ransack добавляйте только с явным списком ransackable_attributes, иначе получите утечку данных через параметры.</div>
+    </div>
+    
+    <div style="margin-bottom:44px" id="monolith_frontend">
+      <h2>Hotwire vs Inertia vs SPA + API</h2>
+      <p class="lead">Главная развилка фронтенда в Rails-проекте 2026 года.</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Hotwire</th><th>Inertia.js</th><th>SPA + Rails API</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th>Где живут вьюхи</th>
+              <td>ERB/Phlex на сервере</td><td>React/Vue компоненты</td><td>Отдельное приложение</td>
+            </tr>
+            
+            <tr>
+              <th>Роутинг</th>
+              <td>Rails</td><td>Rails</td><td>Клиентский</td>
+            </tr>
+            
+            <tr>
+              <th>Нужен ли API</th>
+              <td>Нет</td><td>Нет</td><td>Да, версионированный</td>
+            </tr>
+            
+            <tr>
+              <th>Дублирование валидаций</th>
+              <td>Нет</td><td>Минимальное</td><td>Полное</td>
+            </tr>
+            
+            <tr>
+              <th>SEO</th>
+              <td>Из коробки</td><td>Нужен SSR-процесс на Node</td><td>Нужен Next/Nuxt</td>
+            </tr>
+            
+            <tr>
+              <th>Репозиториев</th>
+              <td>1</td><td>1</td><td>2</td>
+            </tr>
+            
+            <tr>
+              <th>Тулчейнов</th>
+              <td>1 (или 0 с importmap)</td><td>2</td><td>2+</td>
+            </tr>
+            
+            <tr>
+              <th>Сложное клиентское состояние</th>
+              <td>Неудобно</td><td>Родная территория</td><td>Родная территория</td>
+            </tr>
+            
+            <tr>
+              <th>Мобильное приложение</th>
+              <td>Hotwire Native из тех же вьюх</td><td>Нужен API отдельно</td><td>Тот же API</td>
+            </tr>
+            
+            <tr>
+              <th>Кому подходит</th>
+              <td>Fullstack Rails-команда</td><td>Есть фронтендеры, нужен богатый UI</td><td>Выделенные фронтенд- и бэкенд-команды</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> Hotwire покрывает большинство интерфейсов и остаётся первым выбором. Inertia — золотая середина, когда в команде есть React/Vue-разработчики: серверный роутинг сохраняется, API писать не нужно. SPA + API оправдан выделенной фронтенд-командой или общим API для мобильного клиента.</div>
+    </div>
+    
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>
+        <strong>Rails Stack Advisor</strong> — база знаний собрана из семи production-проектов на Rails,
+        рабочих заметок и официальных гайдов.
+      </div>
+      <div class="footer__meta">
+        Ориентир: Rails 8.1 · Ruby 3.4.4 ·
+        обновлено 2026-08 ·
+        <a href="https://guides.rubyonrails.org/index.html">Rails Guides</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>window.RSA_BASE = "/rails-stack-advisor";</script>
+  <script src="/rails-stack-advisor/assets/js/engine.js"></script>
+  <script src="/rails-stack-advisor/assets/js/app.js"></script>
+</body>
+</html>
