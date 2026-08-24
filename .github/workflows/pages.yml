@@ -1,8 +1,16 @@
 name: Deploy Jekyll site to GitHub Pages
 
+# Автозапуск по push отключён: на аккаунте заблокированы GitHub Actions
+# (billing issue), поэтому каждый пуш давал бы красную сборку.
+# Пока сайт публикуется из ветки gh-pages скриптом script/deploy.sh.
+# Когда Actions разблокируют — верните триггер и переключите
+# Settings -> Pages -> Source на GitHub Actions:
+#
+#   on:
+#     push:
+#       branches: [main]
+#     workflow_dispatch:
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
