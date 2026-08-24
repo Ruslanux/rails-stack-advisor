@@ -1,0 +1,241 @@
+# Реальные проекты как опорные точки. Профиль совпадает с ответами анкеты,
+# поэтому движок может находить «похожие» кейсы.
+- id: sawab
+  name: "Sawab"
+  tagline: "Платформа взаимопомощи: заявки, отклики, чат, репутация"
+  live: "sawabapp.org"
+  scale_note: "15 моделей · 29 контроллеров · 30 таблиц · 47 тестов"
+  profile:
+    project_type: mvp
+    domain: medium
+    timeline: product
+    ui: crud
+    seo: important
+    realtime: chat
+    mobile: none
+    team: solo
+    rails_exp: middle
+    scale: small
+    infra: vps_cheap
+    compliance: pii
+  stack:
+    Rails: "8.0.3"
+    Рендеринг: "SSR + Hotwire (Turbo/Stimulus)"
+    Ассеты: "Propshaft + Importmap + Tailwind"
+    БД: "PostgreSQL"
+    Фон: "Solid Queue / Cache / Cable"
+    Auth: "Devise + OmniAuth Google"
+    Права: "Pundit"
+    Пагинация: "Kaminari"
+    Файлы: "Active Storage + S3"
+    Деплой: "Kamal 2 → Hetzner VPS, TLS через kamal-proxy"
+    Наблюдаемость: "Sentry + rack-attack"
+  lessons:
+    - "Solid Trifecta закрыла и очередь, и кэш, и чат — Redis не понадобился ни разу"
+    - "Слой app/services + app/policies появился на 3-й месяц, когда контроллеры перевалили за 60 строк"
+    - "Три языка (ru/kk/en) заложены сразу — доставать строки из вьюх задним числом дороже"
+
+- id: altybaqan
+  name: "Алтыбақан"
+  tagline: "Социальная платформа с админкой, отчётами и PDF-выгрузками"
+  scale_note: "32 модели · 58 контроллеров · 33 таблицы · 139 тестов"
+  profile:
+    project_type: saas
+    domain: medium
+    timeline: product
+    ui: rich
+    seo: important
+    realtime: notify
+    mobile: pwa
+    team: rails_small
+    rails_exp: middle
+    scale: medium
+    infra: vps_cheap
+    compliance: pii
+  stack:
+    Rails: "8.1.2"
+    Рендеринг: "SSR + Hotwire"
+    Ассеты: "Propshaft + Importmap + Tailwind"
+    БД: "PostgreSQL"
+    Фон: "Solid Trifecta"
+    Auth: "Devise + OmniAuth Google"
+    Права: "Pundit"
+    Списки: "Pagy + Ransack"
+    Отчёты: "Chartkick + Groupdate, Prawn для PDF, CSV-экспорт"
+    Прочее: "rqrcode, web-push"
+    Деплой: "Kamal 2, GitHub Actions"
+  lessons:
+    - "Появился отдельный слой app/queries — фильтры Ransack не должны жить в контроллерах"
+    - "Pagy вместо Kaminari: на списках админки разница в аллокациях заметна"
+    - "Web Push + PWA дали мобильный опыт без разработки нативного приложения"
+
+- id: aksioma
+  name: "Аксиома"
+  tagline: "Образовательный центр: 4 личных кабинета, двуязычный интерфейс, AI-помощник"
+  scale_note: "40 моделей · 85 контроллеров · 41 таблица · 116 тестов"
+  profile:
+    project_type: edu
+    domain: complex
+    timeline: longterm
+    ui: crud
+    seo: critical
+    realtime: notify
+    mobile: pwa
+    team: rails_small
+    rails_exp: senior
+    scale: medium
+    infra: vps_cheap
+    compliance: pii
+  stack:
+    Rails: "8.1.3"
+    Рендеринг: "SSR + Hotwire, mobile-first"
+    Ассеты: "Propshaft + Importmap + Tailwind v4"
+    БД: "PostgreSQL"
+    Фон: "Solid Trifecta (без Redis)"
+    Auth: "Devise + OmniAuth Google"
+    Права: "Pundit (app/policies)"
+    Локализация: "rails-i18n, ru/kk"
+    AI: "гем anthropic для помощника"
+    Прочее: "rqrcode, web-push, CSV"
+    Деплой: "Kamal 2 + GitHub Actions CI"
+  lessons:
+    - "85 контроллеров держатся за счёт неймспейсов по кабинетам: student/parent/teacher/admin"
+    - "32 сервис-объекта — граница между «что делает система» и «как это устроено»"
+    - "SEO-критичная открытая часть и закрытые кабинеты живут в одном монолите без конфликтов"
+
+- id: best_marketplace
+  name: "Best Marketplace / KARAKAT"
+  tagline: "Маркетплейс: продавцы, заказы, платежи, доставка, промокоды"
+  scale_note: "41 модель · 64 контроллера · 64 сервиса · 41 таблица"
+  profile:
+    project_type: marketplace
+    domain: complex
+    timeline: longterm
+    ui: rich
+    seo: critical
+    realtime: notify
+    mobile: pwa
+    team: rails_small
+    rails_exp: senior
+    scale: medium
+    infra: vps_cheap
+    compliance: fintech
+  stack:
+    Rails: "8.1.2 / Ruby 4.0.1"
+    Рендеринг: "SSR + Hotwire"
+    Вьюхи: "Phlex (app/components) + ERB"
+    БД: "PostgreSQL + pg_search"
+    Фон: "Solid Trifecta + mission_control-jobs"
+    Auth: "bcrypt (встроенный подход) + OmniAuth Google/Apple"
+    Права: "CanCanCan"
+    Состояния: "AASM для жизненного цикла заказа"
+    Деньги: "money-rails, cloud_payments, свои шлюзы Kaspi/Halyk/Freedom"
+    Списки: "Pagy, discard для мягкого удаления"
+    Защита: "rack-attack, lograge, rack-mini-profiler"
+    Тесты: "RSpec + FactoryBot + SimpleCov"
+  lessons:
+    - "64 сервис-объекта на 41 модель — платёжные и заказные сценарии не помещаются в модели"
+    - "Главный урок: без idempotency_key в таблице платежей ретрай вебхука = двойное списание"
+    - "Свои шлюзы под локальный рынок оказались уместнее, чем готовый движок вроде Solidus"
+
+- id: hr_agentic
+  name: "HR Agentic AI"
+  tagline: "HR-автоматизация с мультиагентной AI-системой, интеграции с календарём и Slack"
+  scale_note: "33 модели · 54 контроллера · 45 таблиц · 1005 тестов"
+  profile:
+    project_type: ai_agent
+    domain: complex
+    timeline: longterm
+    ui: app_like
+    seo: none
+    realtime: notify
+    mobile: none
+    team: with_frontend
+    rails_exp: senior
+    scale: medium
+    infra: cloud
+    compliance: pii
+  stack:
+    Rails: "8.1.x / Ruby 4.0.1"
+    Рендеринг: "Inertia.js + React 18 + TypeScript"
+    Ассеты: "Vite Ruby (vite_rails) + Tailwind"
+    БД: "PostgreSQL"
+    Фон: "Solid Trifecta"
+    Auth: "Authentication Zero + OmniAuth Google"
+    Права: "Action Policy"
+    Поиск: "Meilisearch"
+    AI: "ruby_llm, парсинг pdf-reader/docx"
+    Интеграции: "Google Calendar, Slack, S3"
+    Паттерны: "Interactor, Draper, dry-validation, сериализаторы + Oj"
+    Тесты: "RSpec, FactoryBot, VCR + WebMock, SimpleCov"
+  lessons:
+    - "Inertia убрал необходимость версионировать API — контроллеры остались обычными Rails-контроллерами"
+    - "VCR обязателен: тесты не должны ходить в LLM-провайдера"
+    - "Action Policy вместо Pundit — из-за кэширования проверок на больших списках"
+
+- id: learn_ruby
+  name: "LearnRuby"
+  tagline: "Интерактивное обучение Ruby: песочница, тесты, геймификация, JSON API"
+  live: "learn-ruby.org"
+  scale_note: "8 моделей · 21 контроллер · 7 таблиц · 30 тестов"
+  profile:
+    project_type: edu
+    domain: medium
+    timeline: product
+    ui: rich
+    seo: critical
+    realtime: none
+    mobile: native_api
+    team: solo
+    rails_exp: senior
+    scale: small
+    infra: vps_cheap
+    compliance: standard
+  stack:
+    Rails: "8.0.3 / Ruby 3.4.4"
+    Рендеринг: "SSR + Hotwire, CodeMirror как остров"
+    БД: "PostgreSQL"
+    Фон: "Solid Trifecta"
+    Auth: "Devise (веб) + JWT (мобильный API)"
+    API: "JSON API с JWT для мобильных клиентов"
+    Контент: "redcarpet для markdown-уроков"
+    Защита: "rack-attack (песочница исполняет пользовательский код)"
+    Наблюдаемость: "Sentry + lograge"
+    Деплой: "Kamal 2, отдельный workflow деплоя"
+  lessons:
+    - "Двойная аутентификация (сессии + JWT) в одном приложении — рабочая схема, если API версионирован"
+    - "Исполнение пользовательского кода требует таймаутов, лимитов памяти и жёсткого rate limit"
+    - "8 моделей на серьёзный продукт — сложность была в сервисах, а не в схеме"
+
+- id: instrumaster
+  name: "Instrumaster Pro"
+  tagline: "Каталог и подбор инструмента с компонентным UI"
+  scale_note: "18 моделей · 31 контроллер · 20 таблиц"
+  profile:
+    project_type: content
+    domain: simple
+    timeline: mvp_term
+    ui: crud
+    seo: critical
+    realtime: none
+    mobile: pwa
+    team: solo
+    rails_exp: middle
+    scale: small
+    infra: vps_cheap
+    compliance: standard
+  stack:
+    Rails: "8.1.2"
+    Рендеринг: "SSR + Hotwire"
+    Вьюхи: "Phlex (app/components)"
+    БД: "PostgreSQL + pg_search"
+    Фон: "Solid Trifecta"
+    Auth: "bcrypt + OmniAuth Google"
+    Списки: "Pagy"
+    Документы: "Prawn (PDF)"
+    Защита: "rack-attack, lograge"
+    Деплой: "Kamal 2"
+  lessons:
+    - "pg_search снял вопрос поиска по каталогу без отдельного сервиса"
+    - "Phlex окупился на повторяющихся карточках товара — вёрстка стала обычным Ruby"
+    - "Тесты отложили «на потом» — и это единственный проект из семи, где их нет"

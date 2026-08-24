@@ -1,0 +1,172 @@
+# Шаблон плана реализации. Задача попадает в план, если:
+#   нет условий  -> всегда;
+#   needs: [id]  -> хотя бы один из вариантов выбран движком;
+#   if: {...}    -> ответы анкеты совпали.
+phases:
+  - id: p0
+    title: "Фаза 0 — Каркас и первый деплой"
+    goal: "Пустое, но работающее приложение уже на проде. Дальше катим маленькими шагами."
+    duration: { hackathon: "2–3 часа", mvp_term: "2–3 дня", product: "3–5 дней", longterm: "1 неделя" }
+    tasks:
+      - text: "Зафиксировать версии: `.ruby-version`, Rails в Gemfile, rbenv/Docker для команды"
+      - text: "`rails new` с выбранными флагами (см. блок команды выше)"
+      - text: "Первый коммит и репозиторий на GitHub"
+      - text: "Проверить `bin/setup` и `bin/dev` на чистой машине — это документация для новых людей"
+      - text: "Развернуть заглушку на прод и убедиться, что health-check `/up` отвечает"
+        needs: [kamal_vps, kamal_multi, paas, k8s]
+      - text: "`kamal init`, заполнить `config/deploy.yml`, положить секреты в `.kamal/secrets`"
+        needs: [kamal_vps, kamal_multi]
+      - text: "Настроить registry (ghcr.io или Docker Hub) и токен с правами write:packages"
+        needs: [kamal_vps, kamal_multi]
+      - text: "Включить `.github/workflows/ci.yml`: тесты + RuboCop + Brakeman на каждый push"
+        needs: [ci_addon]
+      - text: "Подключить Sentry и проверить, что тестовое исключение долетает"
+        needs: [obs_sentry, obs_full]
+      - text: "Собрать `_data`-схему контента и настроить сборку статики в CI"
+        needs: [ssg, github_pages_static]
+
+  - id: p1
+    title: "Фаза 1 — Доменная модель"
+    goal: "Схема БД, ключевые модели и правила целостности. Здесь ошибки стоят дороже всего."
+    duration: { hackathon: "3–4 часа", mvp_term: "1 неделя", product: "2 недели", longterm: "2–3 недели" }
+    tasks:
+      - text: "Нарисовать ER-диаграмму до первой миграции — на бумаге дешевле, чем в коде"
+      - text: "Миграции с ограничениями на уровне БД: NOT NULL, foreign keys, уникальные индексы"
+      - text: "Валидации в моделях зеркалят ограничения БД — но не заменяют их"
+      - text: "Индексы под запросы, которые точно будут: списки, фильтры, внешние ключи"
+      - text: "Сиды с реалистичными данными — без них нельзя оценить производительность списков"
+      - text: "Добавить `enum` для статусов вместо строковых литералов"
+      - text: "Описать машину состояний (AASM) для ключевой сущности и запретить невалидные переходы"
+        needs: [aasm_addon]
+      - text: "Настроить мягкое удаление там, где записи нельзя терять физически"
+        if: { compliance: [pii, fintech, gov] }
+      - text: "Включить `encrypts` на чувствительных полях и продумать процедуру удаления данных"
+        needs: [sec_hardened]
+      - text: "Разметить границы модулей (неймспейсы/engines) и зафиксировать их в Packwerk"
+        needs: [modular_monolith]
+      - text: "Подключить `annotaterb`, чтобы схема была видна прямо в моделях"
+        needs: [annotate_addon]
+
+  - id: p2
+    title: "Фаза 2 — Вход и права"
+    goal: "Никакой функциональности до того, как понятно, кто её видит."
+    duration: { hackathon: "1–2 часа", mvp_term: "3–4 дня", product: "1 неделя", longterm: "1–2 недели" }
+    tasks:
+      - text: "`bin/rails generate authentication` и разбор сгенерированного кода"
+        needs: [rails8_builtin]
+      - text: "Установить Devise, настроить модули (confirmable, lockable, recoverable) и почтовые шаблоны"
+        needs: [devise]
+      - text: "Сгенерировать Authentication Zero: сессии + токены + подтверждение почты"
+        needs: [authentication_zero]
+      - text: "Настроить Rodauth: политики паролей, 2FA, журнал входов"
+        needs: [rodauth]
+      - text: "Подключить OmniAuth и обязательно `omniauth-rails_csrf_protection`"
+        needs: [omniauth_addon]
+      - text: "Выдать JWT-токены с коротким TTL + refresh, продумать отзыв"
+        needs: [jwt_addon]
+      - text: "Включить второй фактор для административных учёток"
+        needs: [twofa_addon]
+      - text: "Роли пользователей как enum + сиды на каждую роль"
+      - text: "Написать политики и включить `verify_authorized` — забытая проверка должна падать в тестах"
+        needs: [pundit, action_policy]
+      - text: "Описать Ability и включить `check_authorization` в ApplicationController"
+        needs: [cancancan]
+      - text: "Тест на каждый негативный сценарий: чужой объект должен возвращать 403/404"
+
+  - id: p3
+    title: "Фаза 3 — Основной сценарий"
+    goal: "Один путь пользователя от входа до целевого действия, работающий целиком."
+    duration: { hackathon: "4–6 часов", mvp_term: "2 недели", product: "4–6 недель", longterm: "6–10 недель" }
+    tasks:
+      - text: "Выбрать один сценарий, который создаёт ценность, и довести его до конца, не отвлекаясь"
+      - text: "Контроллеры по 7 стандартным действиям; всё нестандартное — отдельный ресурс"
+      - text: "Вынести сценарии в `app/services`, выборки — в `app/queries`"
+        needs: [service_query, full_toolbox]
+      - text: "Form-объекты для форм, которые не совпадают с моделью один в один"
+        needs: [full_toolbox]
+      - text: "Turbo Frames для частичных обновлений, Turbo Streams для списков"
+        needs: [ssr_hotwire, hybrid_islands]
+      - text: "Настроить Inertia-страницы и типы props (TypeScript) для основного сценария"
+        needs: [ssr_inertia]
+      - text: "Спроектировать версионированный `/api/v1` и зафиксировать контракт"
+        needs: [rest_serializers, rest_jbuilder, spa_api]
+      - text: "Настроить Vite: entrypoints, HMR в разработке, сборка в Dockerfile"
+        needs: [vite_ruby]
+      - text: "Выделить переиспользуемые компоненты, как только разметка повторилась в третий раз"
+        needs: [view_component, phlex]
+      - text: "Подключить пагинацию на всех списках сразу — не «когда записей станет много»"
+      - text: "Фоновые задачи для всего, что дольше 300 мс: почта, отчёты, обработка файлов"
+      - text: "Настроить Active Storage, варианты изображений и лимиты размера загрузок"
+        needs: [as_local, as_s3, as_r2_minio]
+
+  - id: p4
+    title: "Фаза 4 — Обвязка продукта"
+    goal: "То, что превращает работающий прототип в продукт: поиск, уведомления, отчёты, админка."
+    duration: { hackathon: "пропустить", mvp_term: "1 неделя", product: "3–4 недели", longterm: "6+ недель" }
+    tasks:
+      - text: "Поиск и фильтры по основным сущностям"
+      - text: "Настроить pg_search: словари, веса полей, индекс tsvector"
+        needs: [pg_search]
+      - text: "Поднять Meilisearch, настроить синхронизацию индекса и процедуру переиндексации"
+        needs: [meilisearch]
+      - text: "Считать и хранить эмбеддинги, настроить гибридный поиск"
+        needs: [pgvector_hybrid]
+      - text: "Формы фильтрации на Ransack — с явным белым списком `ransackable_attributes`"
+        needs: [ransack_addon]
+      - text: "Уведомления: почта + внутренние, с настройками отписки"
+      - text: "Каналы реального времени и авторизация подписок"
+        if: { realtime: [chat, collab] }
+      - text: "Web Push и манифест PWA"
+        if: { mobile: [pwa] }
+      - text: "Административная панель: модерация, блокировки, аудит действий"
+        if: { project_type: [marketplace, saas, corp, edu, gov] }
+      - text: "Экспорт в CSV/PDF для отчётности"
+        if: { project_type: [corp, marketplace, edu, gov] }
+      - text: "Локализация интерфейса и данных, переключатель языка"
+        needs: [i18n_addon]
+      - text: "Идемпотентные ключи на платежах, проверка подписи вебхуков, ежедневная сверка"
+        needs: [sec_payments]
+
+  - id: p5
+    title: "Фаза 5 — Готовность к нагрузке"
+    goal: "Приложение переживает реальных пользователей, а не только демо."
+    duration: { hackathon: "пропустить", mvp_term: "2–3 дня", product: "1–2 недели", longterm: "постоянно" }
+    tasks:
+      - text: "Прогнать основные страницы с реалистичным объёмом данных и найти N+1"
+      - text: "Включить Bullet в разработке и довести список предупреждений до нуля"
+        needs: [bullet_addon]
+      - text: "Кэширование фрагментов на тяжёлых списках и карточках"
+      - text: "Rack::Attack: лимиты на вход, регистрацию, поиск и API"
+      - text: "Проверить прогрев и время отклика после деплоя (Thruster + health-check)"
+        needs: [kamal_vps, kamal_multi]
+      - text: "Вынести воркеры в отдельную роль Kamal"
+        needs: [kamal_multi]
+      - text: "Настроить реплику для чтения и направить туда отчётные запросы"
+        if: { scale: [large, huge] }
+      - text: "Отдельная база под Solid Queue, чтобы очередь не конкурировала с вебом"
+        if: { scale: [large, huge] }
+      - text: "Курсорная пагинация на самых длинных лентах"
+        needs: [cursor_pagination]
+      - text: "Дашборд фоновых задач (mission_control-jobs) и алерт на мёртвые задачи"
+        needs: [obs_sentry, obs_full]
+      - text: "Настроить трейсинг и SLO-алерты"
+        needs: [obs_full]
+
+  - id: p6
+    title: "Фаза 6 — Эксплуатация"
+    goal: "Продукт живёт без вас по ночам."
+    duration: { hackathon: "пропустить", mvp_term: "1–2 дня", product: "1 неделя", longterm: "постоянно" }
+    tasks:
+      - text: "Автоматические бэкапы БД + проверенное восстановление (бэкап без теста восстановления не бэкап)"
+      - text: "Бэкап загруженных файлов отдельно от БД"
+        needs: [as_local]
+      - text: "Мониторинг доступности снаружи (uptime-пинг на `/up`)"
+      - text: "Ротация логов и разумный `RAILS_LOG_LEVEL` на проде"
+      - text: "`bundler-audit` и `brakeman` в CI, регулярное обновление зависимостей (Dependabot)"
+      - text: "Staging-окружение отдельным destination Kamal"
+        needs: [kamal_vps, kamal_multi]
+      - text: "Runbook: как откатить релиз, как зайти в консоль, как посмотреть логи"
+      - text: "Процедура удаления персональных данных по запросу пользователя"
+        if: { compliance: [pii, gov, fintech] }
+      - text: "Регулярная сверка платежей с эквайером и отчёт о расхождениях"
+        needs: [sec_payments]

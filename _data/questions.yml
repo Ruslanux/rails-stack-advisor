@@ -1,0 +1,126 @@
+# Анкета профиля проекта. id вопроса -> используется в правилах options.yml
+- section: "Проект"
+  icon: "◆"
+  items:
+    - id: project_type
+      title: "Тип проекта"
+      hint: "Определяет доменную сложность, набор паттернов и приоритеты."
+      default: mvp
+      options:
+        - { value: mvp,        label: "MVP / стартап",            note: "Проверка гипотезы, скорость важнее всего" }
+        - { value: saas,       label: "SaaS B2B",                 note: "Мультитенантность, роли, биллинг" }
+        - { value: marketplace,label: "Маркетплейс / e-commerce",  note: "Заказы, платежи, продавцы, каталог" }
+        - { value: corp,       label: "Корпоративная система",     note: "Много ролей, интеграции, отчётность" }
+        - { value: content,    label: "Контент / медиа / лендинг", note: "Тексты, SEO, редко меняющиеся данные" }
+        - { value: internal,   label: "Внутренний инструмент",     note: "Админка, back-office, за логином" }
+        - { value: api_mobile, label: "Бэкенд для мобильного",     note: "Клиент — iOS/Android/партнёры" }
+        - { value: ai_agent,   label: "AI / агентное приложение",  note: "LLM, длинные задачи, стриминг" }
+        - { value: edu,        label: "Образовательная платформа", note: "Курсы, прогресс, геймификация" }
+        - { value: gov,        label: "Гос / highload / финтех",   note: "Аудит, SLA, отказоустойчивость" }
+
+    - id: domain
+      title: "Сложность предметной области"
+      hint: "Сколько бизнес-правил живёт вне обычного CRUD."
+      default: medium
+      options:
+        - { value: simple,  label: "Простая", note: "CRUD, одна роль, минимум статусов" }
+        - { value: medium,  label: "Средняя", note: "Несколько ролей, workflow, отчёты" }
+        - { value: complex, label: "Сложная", note: "Машины состояний, деньги, интеграции, идемпотентность" }
+
+    - id: timeline
+      title: "Горизонт и сроки"
+      default: mvp_term
+      options:
+        - { value: hackathon, label: "Хакатон / дни",     note: "Демо любой ценой" }
+        - { value: mvp_term,  label: "MVP / 1–2 месяца",  note: "Первые пользователи" }
+        - { value: product,   label: "Продукт / 3–6 мес", note: "Полноценный релиз" }
+        - { value: longterm,  label: "Долгоживущая система", note: "Годы поддержки и роста команды" }
+
+- section: "Интерфейс"
+  icon: "▢"
+  items:
+    - id: ui
+      title: "Насыщенность интерфейса"
+      hint: "Главный фактор выбора между Hotwire, Inertia и SPA."
+      default: crud
+      options:
+        - { value: static,   label: "Статичный контент",   note: "Страницы, тексты, формы обратной связи" }
+        - { value: crud,     label: "Формы и CRUD",        note: "Списки, фильтры, модалки, вложенные формы" }
+        - { value: rich,     label: "Богатый интерактив",  note: "Drag&drop, живые счётчики, графики" }
+        - { value: app_like, label: "Клиентское приложение", note: "Редакторы, canvas, офлайн-состояние, сложный стейт" }
+
+    - id: seo
+      title: "Значимость SEO"
+      default: important
+      options:
+        - { value: critical,  label: "Критично",  note: "Органика — основной канал" }
+        - { value: important, label: "Важно",     note: "Публичная часть индексируется" }
+        - { value: none,      label: "Не важно",  note: "Всё за логином" }
+
+    - id: realtime
+      title: "Реальное время"
+      default: notify
+      options:
+        - { value: none,   label: "Не нужно" }
+        - { value: notify, label: "Уведомления, счётчики", note: "Точечные обновления кусков страницы" }
+        - { value: chat,   label: "Чат / живые ленты",     note: "Двусторонний поток сообщений" }
+        - { value: collab, label: "Совместное редактирование", note: "Курсоры, конфликты, presence" }
+
+    - id: mobile
+      title: "Мобильный клиент"
+      default: none
+      options:
+        - { value: none,           label: "Только веб" }
+        - { value: pwa,            label: "PWA",           note: "Установка на экран, push" }
+        - { value: hotwire_native, label: "Hotwire Native", note: "iOS/Android поверх тех же вьюх" }
+        - { value: native_api,     label: "Нативное / RN / Flutter", note: "Нужен полноценный API" }
+
+- section: "Команда"
+  icon: "◈"
+  items:
+    - id: team
+      title: "Состав команды"
+      default: rails_small
+      options:
+        - { value: solo,          label: "1–2 разработчика",        note: "Каждая лишняя технология — риск" }
+        - { value: rails_small,   label: "3–7 фуллстек на Rails",   note: "Rails-way во всём" }
+        - { value: with_frontend, label: "Есть фронтендеры React/Vue", note: "Разделение зон ответственности" }
+        - { value: large,         label: "Много команд",            note: "Нужны границы модулей и контракты" }
+
+    - id: rails_exp
+      title: "Опыт с Rails"
+      default: middle
+      options:
+        - { value: junior, label: "Начинающий", note: "Ставим на дефолты и подробные гайды" }
+        - { value: middle, label: "Средний",    note: "Уверенный CRUD, знаком с Hotwire" }
+        - { value: senior, label: "Опытный",    note: "Готов брать нестандартные решения" }
+
+- section: "Инфраструктура"
+  icon: "▣"
+  items:
+    - id: scale
+      title: "Ожидаемая нагрузка"
+      default: small
+      options:
+        - { value: small,  label: "< 1 000 MAU",       note: "Один сервер закрывает всё" }
+        - { value: medium, label: "1 тыс – 50 тыс MAU", note: "Один-два сервера, фоновые задачи" }
+        - { value: large,  label: "50 тыс – 500 тыс",   note: "Реплики, кэш, отдельные воркеры" }
+        - { value: huge,   label: "> 500 тыс / highload", note: "Шардирование, очереди, наблюдаемость" }
+
+    - id: infra
+      title: "Инфраструктура и бюджет"
+      default: vps_cheap
+      options:
+        - { value: vps_cheap,  label: "Свой VPS ($5–40/мес)", note: "Hetzner, DO, Contabo" }
+        - { value: paas,       label: "PaaS",                 note: "Heroku, Render, Fly.io" }
+        - { value: cloud,      label: "Облако (AWS/GCP)",     note: "Managed БД, S3, автоскейл" }
+        - { value: enterprise, label: "Enterprise / on-prem", note: "K8s, свои ЦОДы, аудит" }
+
+    - id: compliance
+      title: "Требования к данным"
+      default: standard
+      options:
+        - { value: standard, label: "Обычные" }
+        - { value: pii,      label: "Персональные данные", note: "Согласия, удаление, логи доступа" }
+        - { value: fintech,  label: "Деньги / платежи",    note: "Идемпотентность, сверки, аудит" }
+        - { value: gov,      label: "Гос / медицина",      note: "On-prem, сертификация, журналирование" }

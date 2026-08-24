@@ -1,0 +1,53 @@
+---
+layout: default
+title: Сравнения
+permalink: /compare/
+description: Прямые сравнения технологий Rails — SSR/CSR/SSG, Solid Trifecta vs Sidekiq, Devise vs Rails 8 auth, Pundit vs CanCanCan, Kamal vs PaaS и другие.
+---
+<section class="hero">
+  <div class="wrap">
+    <h1>Сравнения лоб в лоб</h1>
+    <p class="hero__lead">
+      Двенадцать развилок, на которых чаще всего застревают Rails-проекты. Каждая таблица
+      заканчивается вердиктом — что брать по умолчанию и когда от этого умолчания отступать.
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="toc">
+      <ol>
+        {% for c in site.data.comparisons %}
+        <li><a href="#{{ c.id }}">{{ c.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    {% for c in site.data.comparisons %}
+    <div style="margin-bottom:44px" id="{{ c.id }}">
+      <h2>{{ c.title }}</h2>
+      <p class="lead">{{ c.lead }}</p>
+      <div class="tablewrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th></th>
+              {% for col in c.columns %}<th>{{ col }}</th>{% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in c.rows %}
+            <tr>
+              <th>{{ row.k }}</th>
+              {% for v in row.v %}<td>{{ v }}</td>{% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="verdictbox"><b>Вердикт.</b> {{ c.verdict }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

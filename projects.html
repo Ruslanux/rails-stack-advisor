@@ -1,0 +1,52 @@
+---
+layout: default
+title: Кейсы
+permalink: /projects/
+description: Семь реальных production-проектов на Rails 8 — стек, масштаб и извлечённые уроки.
+---
+<section class="hero">
+  <div class="wrap">
+    <h1>Семь проектов, на которых собрана эта база</h1>
+    <p class="hero__lead">
+      Не абстрактные рекомендации, а Gemfile'ы работающих приложений: от маркетплейса с платежами
+      до мультиагентной HR-платформы на Inertia. У каждого — профиль, стек и то, что выяснилось в процессе.
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    {% for p in site.data.projects %}
+    <div class="card" style="margin-bottom:18px" id="{{ p.id }}">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <h2 style="margin:0">{{ p.name }}</h2>
+        {% if p.live %}<a href="https://{{ p.live }}" class="pill">{{ p.live }}</a>{% endif %}
+        <span class="muted" style="margin-left:auto;font-family:var(--mono);font-size:.78rem">{{ p.scale_note }}</span>
+      </div>
+      <p class="dim" style="margin:6px 0 16px">{{ p.tagline }}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Стек</h4>
+          <ul class="sim__stack">
+            {% for kv in p.stack %}<li><b>{{ kv[0] }}</b><span>{{ kv[1] }}</span></li>{% endfor %}
+          </ul>
+        </div>
+        <div>
+          <h4 class="dec__cat" style="margin-bottom:8px">Что выяснилось</h4>
+          <ul class="why">
+            {% for l in p.lessons %}<li>{{ l }}</li>{% endfor %}
+          </ul>
+          <h4 class="dec__cat" style="margin:16px 0 8px">Профиль в подборщике</h4>
+          <div class="pills">
+            {% for kv in p.profile %}<span class="pill">{{ kv[0] }}: {{ kv[1] }}</span>{% endfor %}
+          </div>
+          <a class="btn btn--sm" style="margin-top:12px" href="{{ '/' | relative_url }}?{% for kv in p.profile %}{{ kv[0] }}={{ kv[1] }}{% unless forloop.last %}&amp;{% endunless %}{% endfor %}">
+            Открыть этот профиль в подборщике →
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

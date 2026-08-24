@@ -1,0 +1,136 @@
+# ================================================================
+#  Кросс-слойные правила и уточнения.
+#
+#  Категории считаются в порядке объявления в options.yml, поэтому
+#  правило может опираться на уже сделанный выбор через `picked:`
+#  (срабатывает, если выбран хотя бы один из перечисленных id).
+#  Здесь правила только ДОБАВЛЯЮТСЯ к вариантам — options.yml не меняется.
+# ================================================================
+
+# ---------- согласованность: рендеринг -> фронтенд -> ассеты -> вьюхи ----------
+- { category: frontend, option: hotwire_importmap, rules: [
+    { picked: [ssr_hotwire, ssg], score: 25, why: "Следствие выбранного серверного рендеринга" },
+    { picked: [ssr_inertia, spa_api], score: -60, why: "Не сочетается с компонентным фронтендом" } ] }
+
+- { category: frontend, option: hotwire_bundling, rules: [
+    { picked: [ssr_inertia, spa_api], score: -50, why: "Не сочетается с компонентным фронтендом" } ] }
+
+- { category: frontend, option: inertia_react, rules: [
+    { picked: [ssr_inertia], score: 45, why: "Прямое следствие выбора Inertia как модели рендеринга" },
+    { picked: [ssr_hotwire], score: -35, why: "Серверный рендеринг вьюх уже выбран" } ] }
+
+- { category: frontend, option: inertia_vue, rules: [
+    { picked: [ssr_inertia], score: 30, why: "Альтернативный клиентский фреймворк для Inertia" },
+    { picked: [ssr_hotwire], score: -35, why: "Серверный рендеринг вьюх уже выбран" } ] }
+
+- { category: frontend, option: turbo_mount, rules: [
+    { picked: [hybrid_islands], score: 55, why: "Именно этот инструмент реализует подход с островами" },
+    { picked: [ssr_inertia, spa_api], score: -30, why: "Острова не нужны там, где весь фронт уже компонентный" } ] }
+
+- { category: frontend, option: api_meta_framework, rules: [
+    { picked: [spa_api], score: 50, why: "Отдельный фронтенд-проект — следствие выбора SPA + API" },
+    { picked: [ssr_hotwire, hybrid_islands], score: -40, why: "Рендеринг остаётся на сервере" } ] }
+
+- { category: assets, option: vite_ruby, rules: [
+    { picked: [inertia_react, inertia_vue, turbo_mount, superglue, api_meta_framework], score: 55, why: "Стандартный сборщик для этого фронтенда" } ] }
+
+- { category: assets, option: propshaft_importmap, rules: [
+    { picked: [hotwire_importmap], score: 30, why: "Importmap выбран на уровне фронтенда" },
+    { picked: [inertia_react, inertia_vue, turbo_mount, superglue], score: -55, why: "Компонентному фронтенду нужна сборка" } ] }
+
+- { category: assets, option: propshaft_esbuild, rules: [
+    { picked: [hotwire_bundling], score: 45, why: "esbuild выбран на уровне фронтенда" },
+    { picked: [hotwire_importmap], score: -35, why: "Importmap уже закрывает доставку JS" } ] }
+
+- { category: views, option: jsx_components, rules: [
+    { picked: [inertia_react, inertia_vue, api_meta_framework, superglue], score: 55, why: "Вьюхи живут во фронтенд-фреймворке" },
+    { picked: [hotwire_importmap, hotwire_bundling], score: -45, why: "Разметка формируется на сервере" } ] }
+
+- { category: views, option: erb_partials, rules: [
+    { picked: [inertia_react, inertia_vue, api_meta_framework], score: -50, why: "Серверные шаблоны остаются только для писем и служебных страниц" } ] }
+
+- { category: views, option: view_component, rules: [
+    { picked: [inertia_react, inertia_vue, api_meta_framework], score: -45, why: "Компонентная модель уже есть на клиенте" } ] }
+
+- { category: views, option: phlex, rules: [
+    { picked: [inertia_react, inertia_vue, api_meta_framework], score: -45, why: "Компонентная модель уже есть на клиенте" } ] }
+
+# ---------- API следует за моделью рендеринга ----------
+- { category: api, option: api_none, rules: [
+    { picked: [spa_api, api_meta_framework], score: -70, why: "Отдельный фронтенд не может работать без API" },
+    { picked: [ssr_inertia], score: 20, why: "Inertia передаёт props напрямую — версионированный API не нужен" } ] }
+
+- { category: api, option: rest_serializers, rules: [
+    { picked: [spa_api, api_meta_framework], score: 45, why: "Клиентскому приложению нужен явный версионированный контракт" } ] }
+
+- { category: api, option: rest_jbuilder, rules: [
+    { picked: [spa_api, api_meta_framework], score: 15, why: "Рабочий вариант, пока коллекции невелики" } ] }
+
+# ---------- деплой согласован с рендерингом и инфраструктурой ----------
+- { category: deploy, option: github_pages_static, rules: [
+    { picked: [ssg], score: 85, why: "Статическая сборка не требует сервера — бесплатный хостинг закрывает задачу целиком" } ] }
+
+- { category: deploy, option: kamal_vps, rules: [
+    { picked: [ssg], score: -70, why: "Держать сервер ради статических файлов незачем" },
+    { if: { infra: [paas] }, score: -30, why: "Выбрана управляемая платформа — сервер администрировать не планируется" },
+    { if: { infra: [cloud] }, score: -10, why: "В облаке обычно уже есть свои механизмы выката" } ] }
+
+- { category: deploy, option: paas, rules: [
+    { if: { infra: [paas] }, score: 20, why: "Прямо выбранная модель размещения" },
+    { picked: [ssg], score: -40, why: "Статике не нужен рантайм платформы" } ] }
+
+- { category: deploy, option: kamal_multi, rules: [
+    { if: { infra: [paas] }, score: -30, why: "Управление собственными серверами не планируется" },
+    { picked: [ssg], score: -60, why: "Статике не нужны серверы" } ] }
+
+- { category: deploy, option: k8s, rules: [
+    { if: { infra: [cloud] }, score: 15, why: "В облаке managed-кластер доступен без собственной платформенной команды" },
+    { picked: [ssg], score: -60, why: "Статике не нужен кластер" } ] }
+
+# ---------- хранилище файлов и число инстансов ----------
+- { category: storage, option: as_local, rules: [
+    { picked: [k8s, kamal_multi], score: -45, why: "Несколько инстансов не могут делить локальный диск" },
+    { picked: [ssg, github_pages_static], score: -35, why: "Статический хостинг не принимает загрузки" } ] }
+
+- { category: storage, option: as_s3, rules: [
+    { picked: [k8s, kamal_multi], score: 30, why: "Файлы должны быть доступны всем инстансам одинаково" } ] }
+
+- { category: storage, option: storage_none, rules: [
+    { picked: [ssg, github_pages_static], score: 55, why: "На статическом сайте пользовательских загрузок не бывает" } ] }
+
+# ---------- прочие уточнения ----------
+- { category: pagination, option: turbo_infinite, rules: [
+    { picked: [ssr_hotwire], score: 15, why: "Реализуется штатным Turbo Frame без собственного JS" },
+    { picked: [spa_api, ssr_inertia], score: -25, why: "На клиентском фронтенде лента делается средствами фреймворка" } ] }
+
+- { category: authorization, option: plain_guards, rules: [
+    { if: { team: [solo], domain: [simple] }, score: 12, why: "Один разработчик и простые правила — формальный слой избыточен" } ] }
+
+- { category: database, option: sqlite, rules: [
+    { if: { timeline: [longterm] }, score: -20, why: "На горизонте лет переезд на PostgreSQL почти неизбежен — дешевле начать сразу с него" },
+    { picked: [k8s, kamal_multi], score: -50, why: "Файл БД не разделяется между несколькими инстансами" } ] }
+
+- { category: database, option: postgres, rules: [
+    { if: { timeline: [longterm] }, score: 15, why: "Не придётся мигрировать хранилище на ходу" } ] }
+
+# ---------- статический сайт: остальные слои схлопываются ----------
+- { category: background, option: solid_trifecta, rules: [
+    { picked: [ssg], score: -50, why: "Фоновых задач в статической сборке нет" } ] }
+
+- { category: auth, option: rails8_builtin, rules: [
+    { picked: [ssg], score: -40, why: "Аутентификации на статическом сайте не существует" } ] }
+
+- { category: auth, option: authentication_zero, rules: [
+    { picked: [spa_api, api_meta_framework], score: 25, why: "Сразу даёт и сессии, и токены — удобно для раздельного фронтенда" } ] }
+
+- { category: patterns, option: rails_way, rules: [
+    { picked: [ssg], score: 40, why: "Бизнес-логики в статической сборке почти нет" } ] }
+
+# ---------- канонический случай статики: контент без рантайма ----------
+- { category: rendering, option: ssg, rules: [
+    { if: { ui: [static], domain: [simple], realtime: [none] }, score: 55,
+      why: "Ни пользовательских данных, ни логики в рантайме — сервер не нужен вообще" } ] }
+
+- { category: rendering, option: ssr_hotwire, rules: [
+    { if: { ui: [static], project_type: [content], domain: [simple], realtime: [none] }, score: -35,
+      why: "Держать Rails-процесс ради страниц, которые не меняются между запросами, — лишние расходы и лишняя поверхность атаки" } ] }

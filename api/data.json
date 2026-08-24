@@ -1,0 +1,13 @@
+---
+layout: null
+sitemap: false
+---
+{
+  "meta": { "rails": {{ site.versions.rails | jsonify }}, "ruby": {{ site.versions.ruby | jsonify }}, "updated": {{ site.versions.updated | jsonify }} },
+  "questions": {{ site.data.questions | jsonify }},
+  "options": {{ site.data.options | jsonify }},
+  "tuning": {{ site.data.tuning | jsonify }},
+  "plans": {{ site.data.plans | jsonify }},
+  "risks": {{ site.data.risks | jsonify }},
+  "projects": {{ site.data.projects | jsonify }}
+}
