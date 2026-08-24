@@ -15,7 +15,7 @@ baseurl: ""
 url: ""
 
 author: "Ruslan"
-repo: "https://github.com/ruslanux/rails-stack-advisor"
+repo: "https://github.com/Ruslanux/rails-stack-advisor"
 
 plugins:
   - jekyll-seo-tag
